@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Sistem Poin Sekolah</title>
+<title>KARMA - RPL SMKN KASOMALANG</title>
 
 <script src="https://cdn.tailwindcss.com"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -35,7 +35,7 @@
 
 <!-- HEADER -->
 <div class="bg-white shadow p-4 flex justify-between items-center">
-    <h1 class="font-bold text-xl">Dashboard Sekolah</h1>
+    <h1 class="font-bold text-xl">KARMA (Karakter dan Moral Anak)</h1>
 
     <div>
         <span id="roleBadge" class="bg-blue-500 text-white px-3 py-1 rounded"></span>
@@ -68,13 +68,6 @@
 
 </div>
 
-<!-- CHART -->
-<div class="p-6">
-    <div class="bg-white p-6 rounded-xl shadow">
-        <h2 class="font-bold mb-4">Grafik Ranking Siswa</h2>
-        <canvas id="chart"></canvas>
-    </div>
-</div>
 
 <!-- RANKING -->
 <div class="p-6">
@@ -134,8 +127,8 @@ function login(){
     const p = pass.value;
 
     const users = [
-        {u:"admin", p:"1234", role:"admin"},
-        {u:"walikelas", p:"1234", role:"guru"}
+        {u:"admin", p:"adminnekas", role:"admin"},
+        {u:"walikelas", p:"walinekas", role:"guru"}
     ];
 
     const f = users.find(x=>x.u===u && x.p===p);
