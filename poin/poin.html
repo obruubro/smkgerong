@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sistem Poin Sekolah</title>
+
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body class="bg-gray-100">
+
+<!-- ================= LOGIN ================= -->
+<div id="loginPage" class="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-600 to-indigo-800">
+
+    <div class="bg-white p-8 rounded-2xl shadow-2xl w-full max-w-md">
+
+        <h1 class="text-2xl font-bold text-center mb-6">Login Sistem Sekolah</h1>
+
+        <input id="user" placeholder="Username" class="w-full border p-3 rounded mb-3">
+        <input id="pass" type="password" placeholder="Password" class="w-full border p-3 rounded mb-3">
+
+        <button onclick="login()" class="w-full bg-blue-600 text-white p-3 rounded">
+            Login
+        </button>
+
+        <p id="msg" class="text-center text-red-500 mt-3"></p>
+
+    </div>
+</div>
+
+<!-- ================= APP ================= -->
+<div id="app" class="hidden">
+
+<!-- HEADER -->
+<div class="bg-white shadow p-4 flex justify-between items-center">
+    <h1 class="font-bold text-xl">Dashboard Sekolah</h1>
+
+    <div>
+        <span id="roleBadge" class="bg-blue-500 text-white px-3 py-1 rounded"></span>
+        <button onclick="logout()" class="text-red-500 ml-3">Logout</button>
+    </div>
+</div>
+
+<!-- STATS -->
+<div class="grid md:grid-cols-4 gap-4 p-6">
+
+    <div class="bg-white p-4 rounded-xl shadow">
+        <p>Total Siswa</p>
+        <h2 id="totalSiswa" class="text-2xl font-bold">0</h2>
+    </div>
+
+    <div class="bg-white p-4 rounded-xl shadow">
+        <p>Pelanggaran</p>
+        <h2 id="pelanggaran" class="text-2xl font-bold text-red-500">0</h2>
+    </div>
+
+    <div class="bg-white p-4 rounded-xl shadow">
+        <p>Prestasi</p>
+        <h2 id="prestasi" class="text-2xl font-bold text-green-500">0</h2>
+    </div>
+
+    <div class="bg-white p-4 rounded-xl shadow">
+        <p>Riwayat</p>
+        <h2 id="riwayat" class="text-2xl font-bold text-blue-500">0</h2>
+    </div>
+
+</div>
+
+<!-- CHART -->
+<div class="p-6">
+    <div class="bg-white p-6 rounded-xl shadow">
+        <h2 class="font-bold mb-4">Grafik Ranking Siswa</h2>
+        <canvas id="chart"></canvas>
+    </div>
+</div>
+
+<!-- RANKING -->
+<div class="p-6">
+    <div class="bg-white p-6 rounded-xl shadow">
+        <h2 class="font-bold mb-4">Top Siswa</h2>
+        <div id="ranking"></div>
+    </div>
+</div>
+
+<!-- INPUT -->
+<div class="p-6">
+    <div class="bg-white p-6 rounded-xl shadow">
+
+        <h2 class="font-bold mb-4">Input Poin</h2>
+
+        <div class="grid md:grid-cols-2 gap-3">
+
+            <input id="tanggal" type="date" class="border p-2 rounded">
+
+            <select id="kelas" class="border p-2 rounded"></select>
+
+            <select id="siswa" class="border p-2 rounded"></select>
+
+            <select id="jenis" class="border p-2 rounded">
+                <option>Pelanggaran</option>
+                <option>Prestasi</option>
+            </select>
+
+            <select id="kategori" class="border p-2 rounded"></select>
+
+            <input id="poin" class="border p-2 rounded bg-gray-100" readonly>
+
+        </div>
+
+        <textarea id="keterangan" class="w-full border p-2 mt-3 rounded" placeholder="Keterangan"></textarea>
+
+        <input id="bukti" class="w-full border p-2 mt-2 rounded" placeholder="Link Bukti">
+
+        <button onclick="simpan()" class="mt-3 bg-blue-600 text-white px-4 py-2 rounded">
+            Simpan
+        </button>
+
+    </div>
+</div>
+
+</div>
+
+<script>
+
+// ================= API =================
+const API = "https://script.google.com/macros/s/AKfycbz3b2deAMyH8kBkmLf1p11pSUM6HGWO-s8l3PCcAnsDncPEwMCAWEALRog_tcZr3ekp/exec";
+
+// ================= LOGIN =================
+function login(){
+
+    const u = user.value;
+    const p = pass.value;
+
+    const users = [
+        {u:"admin", p:"1234", role:"admin"},
+        {u:"walikelas", p:"1234", role:"guru"}
+    ];
+
+    const f = users.find(x=>x.u===u && x.p===p);
+
+    if(!f){
+        msg.innerText = "Login gagal";
+        return;
+    }
+
+    localStorage.setItem("role", f.role);
+
+    loginPage.classList.add("hidden");
+    app.classList.remove("hidden");
+
+    roleBadge.innerText = f.role.toUpperCase();
+
+    init();
+}
+
+function logout(){
+    localStorage.clear();
+    location.reload();
+}
+
+// ================= DATA =================
+let siswaData = [];
+let masterData = [];
+let chart;
+
+// ================= INIT =================
+async function init(){
+
+    tanggal.value = new Date().toISOString().split('T')[0];
+
+    await loadSiswa();
+    await loadMaster();
+    await loadDashboard();
+
+    jenis.addEventListener("change", updateKategori);
+    kategori.addEventListener("change", autoPoin);
+}
+
+// ================= SISWA =================
+async function loadSiswa(){
+
+    let res = await fetch(API+"?action=siswa");
+    siswaData = await res.json();
+
+    let kelasList = [...new Set(siswaData.map(x=>x.kelas))];
+
+    kelas.innerHTML = kelasList.map(k=>`<option>${k}</option>`).join('');
+
+    filterSiswa();
+
+    kelas.onchange = filterSiswa;
+}
+
+function filterSiswa(){
+
+    let k = kelas.value;
+
+    let data = siswaData.filter(x=>x.kelas===k);
+
+    siswa.innerHTML = data.map(s=>`<option>${s.nama}</option>`).join('');
+}
+
+// ================= MASTER =================
+async function loadMaster(){
+
+    let res = await fetch(API+"?action=master");
+    masterData = await res.json();
+
+    updateKategori();
+}
+
+// ================= KATEGORI + POIN =================
+function updateKategori(){
+
+    let data = masterData.filter(m=>m.jenis===jenis.value);
+
+    kategori.innerHTML = data.map(d=>
+        `<option value="${d.kategori}" data-poin="${d.poin}">
+            ${d.kategori}
+        </option>`
+    ).join('');
+
+    autoPoin();
+}
+
+function autoPoin(){
+
+    if(kategori.options.length===0) return;
+
+    let p = kategori.options[kategori.selectedIndex].dataset.poin;
+
+    poin.value = p || 0;
+}
+
+// ================= DASHBOARD =================
+async function loadDashboard(){
+
+    let siswa = await (await fetch(API+"?action=siswa")).json();
+    let data = await (await fetch(API+"?action=laporan")).json();
+
+    totalSiswa.innerText = siswa.length;
+
+    let pel = data.filter(x=>x[3]==="Pelanggaran").length;
+    let pre = data.filter(x=>x[3]==="Prestasi").length;
+
+    pelanggaran.innerText = pel;
+    prestasi.innerText = pre;
+    riwayat.innerText = data.length;
+
+    let map = {};
+
+    data.forEach(r=>{
+        let n=r[2];
+        let p=parseInt(r[5])||0;
+        map[n]=(map[n]||0)+p;
+    });
+
+    let sorted = Object.entries(map)
+        .sort((a,b)=>b[1]-a[1])
+        .slice(0,5);
+
+    ranking.innerHTML = sorted.map((x,i)=>
+        `<div class="flex justify-between border-b py-2">
+            <span>${i+1}. ${x[0]}</span>
+            <b class="text-red-500">${x[1]}</b>
+        </div>`
+    ).join('');
+
+    let labels = sorted.map(x=>x[0]);
+    let values = sorted.map(x=>x[1]);
+
+    if(chart) chart.destroy();
+
+    chart = new Chart(document.getElementById("chart"),{
+        type:"bar",
+        data:{
+            labels,
+            datasets:[{
+                label:"Poin",
+                data:values,
+                backgroundColor:"rgba(59,130,246,0.6)"
+            }]
+        }
+    });
+}
+
+// ================= SIMPAN =================
+async function simpan(){
+
+    let data = {
+        tanggal,
+        kelas:kelas.value,
+        siswa:siswa.value,
+        jenis:jenis.value,
+        kategori:kategori.value,
+        poin:poin.value,
+        keterangan:keterangan.value,
+        bukti:bukti.value
+    };
+
+    await fetch(API,{
+        method:"POST",
+        body:JSON.stringify(data)
+    });
+
+    alert("Tersimpan!");
+
+    loadDashboard();
+}
+
+</script>
+
+</body>
+</html>
