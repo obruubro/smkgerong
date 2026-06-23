@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Dashboard- SMK Negeri Kasomalang</title>
+<title>Dashboard RPL - SMK Negeri Kasomalang</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
@@ -14,6 +14,7 @@
     --primary:#5B4BFF;
     --secondary:#7A6CFF;
     --bg:#F5F7FF;
+    --card:#FFFFFF;
 }
 
 *{
@@ -25,18 +26,23 @@
 
 body{
     background:var(--bg);
-    min-height:100vh;
 }
 
 .header{
-    background:linear-gradient(135deg,var(--primary),var(--secondary));
+    background:linear-gradient(135deg,#5B4BFF,#7A6CFF);
     color:white;
+    padding:70px 20px;
     text-align:center;
-    padding:60px 20px;
 }
 
 .header h1{
-    font-size:2.2rem;
+    font-size:3rem;
+    margin-bottom:10px;
+}
+
+.header h2{
+    font-size:1.4rem;
+    font-weight:500;
     margin-bottom:10px;
 }
 
@@ -45,12 +51,25 @@ body{
 }
 
 .container{
-    max-width:1000px;
+    max-width:1200px;
     margin:auto;
     padding:30px 20px;
 }
 
-.menu{
+.welcome{
+    background:white;
+    padding:30px;
+    border-radius:20px;
+    margin-bottom:25px;
+    box-shadow:0 10px 25px rgba(0,0,0,.08);
+}
+
+.welcome h2{
+    color:var(--primary);
+    margin-bottom:10px;
+}
+
+.menu-grid{
     display:grid;
     grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
     gap:20px;
@@ -60,7 +79,6 @@ body{
     background:white;
     border-radius:20px;
     padding:30px;
-    text-align:center;
     box-shadow:0 10px 25px rgba(0,0,0,.08);
     transition:.3s;
 }
@@ -70,11 +88,11 @@ body{
 }
 
 .icon{
-    font-size:50px;
+    font-size:48px;
     margin-bottom:15px;
 }
 
-.card h2{
+.card h3{
     color:var(--primary);
     margin-bottom:10px;
 }
@@ -86,10 +104,10 @@ body{
 
 .btn{
     display:inline-block;
-    background:linear-gradient(135deg,var(--primary),var(--secondary));
-    color:white;
     text-decoration:none;
-    padding:12px 24px;
+    background:linear-gradient(135deg,#5B4BFF,#7A6CFF);
+    color:white;
+    padding:12px 20px;
     border-radius:10px;
     font-weight:600;
 }
@@ -100,43 +118,106 @@ body{
     color:#777;
 }
 
+@media(max-width:768px){
+
+.header h1{
+    font-size:2rem;
+}
+
+.header h2{
+    font-size:1.1rem;
+}
+
+}
+
 </style>
 </head>
 <body>
 
 <header class="header">
-    <h1>Dashboard PKL</h1>
-    <h2>Rekayasa Perangkat Lunak</h2>h2>
-    <p>SMK Negeri Kasomalang</p>
+
+<h1>💻 RPL</h1>
+
+<h2>Rekayasa Perangkat Lunak</h2>
+
+<p>SMK Negeri Kasomalang</p>
+
 </header>
 
 <div class="container">
 
-    <div class="menu">
+<div class="welcome">
 
-        <div class="card">
+<h2>Selamat Datang</h2>
 
-            <div class="icon">🎓</div>
+<p>
+Website Jurusan Rekayasa Perangkat Lunak (RPL)
+SMK Negeri Kasomalang sebagai pusat informasi
+kegiatan akademik, Praktik Kerja Lapangan (PKL),
+dan pengembangan kompetensi peserta didik.
+</p>
 
-            <h2>Praktik Kerja Lapangan</h2>
+</div>
 
-            <p>
-                Informasi jadwal PKL, surat pemberitahuan,
-                dan daftar penempatan peserta didik.
-            </p>
+<div class="menu-grid">
 
-            <a href="pkl.html" class="btn">
-                Buka Halaman PKL
-            </a>
+<div class="card">
 
-        </div>
+<div class="icon">🎓</div>
 
-    </div>
+<h3>Praktik Kerja Lapangan</h3>
+
+<p>
+Informasi jadwal PKL, surat pemberitahuan,
+dan daftar penempatan peserta didik.
+</p>
+
+<a href="pkl.html" class="btn">
+Buka PKL
+</a>
+
+</div>
+
+<div class="card">
+
+<div class="icon">📚</div>
+
+<h3>Profil Jurusan</h3>
+
+<p>
+Mengenal kompetensi keahlian Rekayasa Perangkat Lunak
+dan peluang karier lulusan.
+</p>
+
+<a href="#" class="btn">
+Lihat Profil
+</a>
+
+</div>
+
+<div class="card">
+
+<div class="icon">🚀</div>
+
+<h3>Proyek Siswa</h3>
+
+<p>
+Kumpulan hasil karya dan proyek aplikasi
+yang dikembangkan oleh siswa RPL.
+</p>
+
+<a href="#" class="btn">
+Lihat Proyek
+</a>
+
+</div>
+
+</div>
 
 </div>
 
 <footer class="footer">
-    © 2026 SMK Negeri Kasomalang
+© 2026 Jurusan Rekayasa Perangkat Lunak - SMK Negeri Kasomalang
 </footer>
 
 </body>
