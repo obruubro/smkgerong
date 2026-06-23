@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Dashboard PKL - SMK Negeri Kasomalang</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+
+:root{
+    --primary:#5B4BFF;
+    --secondary:#7A6CFF;
+    --bg:#F5F7FF;
+}
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Poppins',sans-serif;
+}
+
+body{
+    background:var(--bg);
+    min-height:100vh;
+}
+
+.header{
+    background:linear-gradient(135deg,var(--primary),var(--secondary));
+    color:white;
+    text-align:center;
+    padding:60px 20px;
+}
+
+.header h1{
+    font-size:2.2rem;
+    margin-bottom:10px;
+}
+
+.header p{
+    opacity:.9;
+}
+
+.container{
+    max-width:1000px;
+    margin:auto;
+    padding:30px 20px;
+}
+
+.menu{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+    gap:20px;
+}
+
+.card{
+    background:white;
+    border-radius:20px;
+    padding:30px;
+    text-align:center;
+    box-shadow:0 10px 25px rgba(0,0,0,.08);
+    transition:.3s;
+}
+
+.card:hover{
+    transform:translateY(-5px);
+}
+
+.icon{
+    font-size:50px;
+    margin-bottom:15px;
+}
+
+.card h2{
+    color:var(--primary);
+    margin-bottom:10px;
+}
+
+.card p{
+    color:#666;
+    margin-bottom:20px;
+}
+
+.btn{
+    display:inline-block;
+    background:linear-gradient(135deg,var(--primary),var(--secondary));
+    color:white;
+    text-decoration:none;
+    padding:12px 24px;
+    border-radius:10px;
+    font-weight:600;
+}
+
+.footer{
+    text-align:center;
+    padding:30px;
+    color:#777;
+}
+
+</style>
+</head>
+<body>
+
+<header class="header">
+    <h1>Dashboard PKL</h1>
+    <p>SMK Negeri Kasomalang</p>
+</header>
+
+<div class="container">
+
+    <div class="menu">
+
+        <div class="card">
+
+            <div class="icon">🎓</div>
+
+            <h2>Praktik Kerja Lapangan</h2>
+
+            <p>
+                Informasi jadwal PKL, surat pemberitahuan,
+                dan daftar penempatan peserta didik.
+            </p>
+
+            <a href="pkl.html" class="btn">
+                Buka Halaman PKL
+            </a>
+
+        </div>
+
+    </div>
+
+</div>
+
+<footer class="footer">
+    © 2026 SMK Negeri Kasomalang
+</footer>
+
+</body>
+</html>
