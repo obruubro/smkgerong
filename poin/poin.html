@@ -3,307 +3,2069 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>KARMA - RPL SMKN KASOMALANG</title>
+
+<title>KARMA</title>
 
 <script src="https://cdn.tailwindcss.com"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<style>
+
+html{
+    scroll-behavior:smooth;
+}
+
+body{
+    font-family:'Segoe UI',sans-serif;
+}
+
+.sidebar{
+    width:260px;
+}
+
+.card{
+    background:white;
+    border-radius:16px;
+    box-shadow:0 2px 10px rgba(0,0,0,.08);
+}
+
+.dark{
+    background:#0f172a;
+    color:white;
+}
+
+.dark .card{
+    background:#1e293b;
+    color:white;
+}
+
+.dark table{
+    color:white;
+}
+
+.dark input,
+.dark select,
+.dark textarea{
+    background:#334155;
+    color:white;
+    border-color:#475569;
+}
+
+#qrcode canvas{
+    max-width:100%;
+    height:auto;
+}
+.scrollbar-hide::-webkit-scrollbar{ 
+    display:none; 
+} 
+.scrollbar-hide{ 
+    -ms-overflow-style:none; 
+    scrollbar-width:none; 
+}
+
+@media(max-width:768px){
+
+    .card{
+        padding:14px !important;
+    }
+
+    h1{
+        font-size:1.3rem;
+    }
+
+    h2{
+        font-size:1.1rem;
+    }
+
+}
+
+</style>
+
 </head>
 
-<body class="bg-gray-100">
+<body class="bg-slate-100">
 
-<!-- ================= LOGIN ================= -->
-<div id="loginPage" class="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-600 to-indigo-800">
+<!-- ===================================================== -->
+<!-- LOGIN -->
+<!-- ===================================================== -->
 
-    <div class="bg-white p-8 rounded-2xl shadow-2xl w-full max-w-md">
+<div
+id="loginPage"
+class="min-h-screen flex items-center justify-center bg-gradient-to-br from-indigo-700 to-blue-900">
 
-        <h1 class="text-2xl font-bold text-center mb-6">Login Sistem Sekolah</h1>
+    <div
+    class="bg-white p-8 rounded-3xl shadow-2xl w-full max-w-md">
 
-        <input id="user" placeholder="Username" class="w-full border p-3 rounded mb-3">
-        <input id="pass" type="password" placeholder="Password" class="w-full border p-3 rounded mb-3">
+        <div class="text-center">
 
-        <button onclick="login()" class="w-full bg-blue-600 text-white p-3 rounded">
-            Login
-        </button>
+            <h1
+            class="text-3xl font-bold text-indigo-700">
 
-        <p id="msg" class="text-center text-red-500 mt-3"></p>
+                KARMA
 
-    </div>
-</div>
+            </h1>
 
-<!-- ================= APP ================= -->
-<div id="app" class="hidden">
+            <p
+            class="text-gray-500 mt-2">
 
-<!-- HEADER -->
-<div class="bg-white shadow p-4 flex justify-between items-center">
-    <h1 class="font-bold text-xl">KARMA (Karakter dan Moral Anak)</h1>
+                Login
 
-    <div>
-        <span id="roleBadge" class="bg-blue-500 text-white px-3 py-1 rounded"></span>
-        <button onclick="logout()" class="text-red-500 ml-3">Logout</button>
-    </div>
-</div>
-
-<!-- STATS -->
-<div class="grid md:grid-cols-4 gap-4 p-6">
-
-    <div class="bg-white p-4 rounded-xl shadow">
-        <p>Total Siswa</p>
-        <h2 id="totalSiswa" class="text-2xl font-bold">0</h2>
-    </div>
-
-    <div class="bg-white p-4 rounded-xl shadow">
-        <p>Pelanggaran</p>
-        <h2 id="pelanggaran" class="text-2xl font-bold text-red-500">0</h2>
-    </div>
-
-    <div class="bg-white p-4 rounded-xl shadow">
-        <p>Prestasi</p>
-        <h2 id="prestasi" class="text-2xl font-bold text-green-500">0</h2>
-    </div>
-
-    <div class="bg-white p-4 rounded-xl shadow">
-        <p>Riwayat</p>
-        <h2 id="riwayat" class="text-2xl font-bold text-blue-500">0</h2>
-    </div>
-
-</div>
-
-
-<!-- RANKING -->
-<div class="p-6">
-    <div class="bg-white p-6 rounded-xl shadow">
-        <h2 class="font-bold mb-4">Top Siswa</h2>
-        <div id="ranking"></div>
-    </div>
-</div>
-
-<!-- INPUT -->
-<div class="p-6">
-    <div class="bg-white p-6 rounded-xl shadow">
-
-        <h2 class="font-bold mb-4">Input Poin</h2>
-
-        <div class="grid md:grid-cols-2 gap-3">
-
-            <input id="tanggal" type="date" class="border p-2 rounded">
-
-            <select id="kelas" class="border p-2 rounded"></select>
-
-            <select id="siswa" class="border p-2 rounded"></select>
-
-            <select id="jenis" class="border p-2 rounded">
-                <option>Pelanggaran</option>
-                <option>Prestasi</option>
-            </select>
-
-            <select id="kategori" class="border p-2 rounded"></select>
-
-            <input id="poin" class="border p-2 rounded bg-gray-100" readonly>
+            </p>
 
         </div>
 
-        <textarea id="keterangan" class="w-full border p-2 mt-3 rounded" placeholder="Keterangan"></textarea>
+        <div class="mt-6">
 
-        <input id="bukti" class="w-full border p-2 mt-2 rounded" placeholder="Link Bukti">
+            <input
+            id="user"
+            type="text"
+            placeholder="Username"
+            class="w-full border p-3 rounded-lg mb-3">
 
-        <button onclick="simpan()" class="mt-3 bg-blue-600 text-white px-4 py-2 rounded">
-            Simpan
+            <input
+            id="pass"
+            type="password"
+            placeholder="Password"
+            class="w-full border p-3 rounded-lg mb-3">
+
+            <button
+            onclick="login()"
+            class="w-full bg-indigo-600 text-white p-3 rounded-lg">
+
+                Login
+
+            </button>
+
+            <div
+            id="msg"
+            class="text-red-500 text-center mt-3">
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- ===================================================== -->
+<!-- APP -->
+<!-- ===================================================== -->
+
+<div
+id="app"
+class="hidden">
+
+<div class="min-h-screen">
+
+<!-- ===================================================== -->
+<!-- ===================================================== -->
+<!-- CONTENT -->
+<!-- ===================================================== -->
+
+<div class="w-full">
+
+<!-- ===================================================== -->
+<!-- HEADER -->
+<!-- ===================================================== -->
+<!-- Container Utama Header (Jarak aman px-6 agar tidak mepet pinggir) -->
+<div class="flex justify-between items-center px-6 py-5 bg-white dark:bg-slate-950 transition-colors">
+    
+    <!-- Bagian Logo KARMA Keren (Rata Kiri) -->
+    <div class="text-left group cursor-pointer">
+        <!-- Teks Utama dengan Shadow Modern & Gradasi Kreatif -->
+        <h1 class="text-3xl font-black tracking-[0.15em] uppercase leading-none drop-shadow-[0_4px_12px_rgba(79,70,229,0.15)] dark:drop-shadow-[0_4px_20px_rgba(99,102,241,0.3)]">
+            <span class="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-violet-500 dark:from-indigo-400 dark:to-cyan-400">KAR</span><span class="font-light text-slate-800 dark:text-slate-200 tracking-[0.25em]">MA</span><span class="text-indigo-600 dark:text-cyan-400 animate-pulse">.</span>
+        </h1>
+        <!-- Sub-teks Sekolah dengan Garis Aksen Kecil -->
+        <div class="flex items-center gap-2 mt-1.5">
+            <span class="w-4 h-[1px] bg-indigo-500/50"></span>
+            <p class="text-[9px] font-bold tracking-[0.3em] text-slate-400 dark:text-slate-500 uppercase">
+                SMK Negeri Kasomalang
+            </p>
+        </div>
+    </div>
+
+    <!-- Bagian Tombol Aksi Kanan -->
+    <div class="flex items-center gap-3">
+        <span id="roleBadge" class="bg-indigo-600 text-white px-4 py-2 rounded-xl text-xs font-bold tracking-wider uppercase shadow-sm shadow-indigo-600/20">
+            <!-- Isi Role -->
+        </span>
+
+        <button onclick="toggleDark()" class="bg-slate-100 dark:bg-slate-900 border border-transparent dark:border-slate-800 p-2.5 rounded-xl hover:bg-slate-200 dark:hover:bg-slate-800 transition-all active:scale-95 text-base">
+            🌙
+        </button>
+
+        <button onclick="logout()" class="bg-rose-500 hover:bg-rose-600 text-white px-4 py-2 rounded-xl text-xs font-bold tracking-wide uppercase transition-all active:scale-95 shadow-sm shadow-rose-500/20">
+            Logout
+        </button>
+    </div>
+
+</div>
+
+<!-- Navigasi Sticky -->
+<div class="sticky top-0 z-30 bg-white/80 dark:bg-slate-950/80 backdrop-blur-md border-b border-slate-100 dark:border-slate-900 transition-colors">
+    <div class="flex justify-around py-3.5 text-xl">
+        <a href="#dashboard" class="hover:scale-125 hover:-translate-y-0.5 active:scale-95 transition-all duration-200">📊</a>
+        <a href="#input" class="hover:scale-125 hover:-translate-y-0.5 active:scale-95 transition-all duration-200">➕</a>
+        <a href="#ranking" class="hover:scale-125 hover:-translate-y-0.5 active:scale-95 transition-all duration-200">🏆</a>
+        <a href="#riwayat" class="hover:scale-125 hover:-translate-y-0.5 active:scale-95 transition-all duration-200">📋</a>
+        <a href="#badge" class="hover:scale-125 hover:-translate-y-0.5 active:scale-95 transition-all duration-200">⭐</a>
+        <a href="#qrsiswa" class="hover:scale-125 hover:-translate-y-0.5 active:scale-95 transition-all duration-200">🔳</a>
+        <a href="#dokumen" class="hover:scale-125 hover:-translate-y-0.5 active:scale-95 transition-all duration-200">📄</a>
+    </div>
+</div>
+<!-- ===================================================== -->
+<!-- DASHBOARD -->
+<!-- ===================================================== -->
+
+<div
+id="dashboard"
+class="p-6">
+
+    <!-- Statistik -->
+
+    <div
+    class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+
+        <div class="card p-5">
+
+            <p class="text-gray-500">
+
+                Total Siswa
+
+            </p>
+
+            <h2
+            id="totalSiswa"
+            class="text-3xl font-bold mt-2">
+
+                0
+
+            </h2>
+
+        </div>
+
+        <div class="card p-5">
+
+            <p class="text-gray-500">
+
+                Pelanggaran
+
+            </p>
+
+            <h2
+            id="pelanggaran"
+            class="text-3xl font-bold text-red-500 mt-2">
+
+                0
+
+            </h2>
+
+        </div>
+
+        <div class="card p-5">
+
+            <p class="text-gray-500">
+
+                Prestasi
+
+            </p>
+
+            <h2
+            id="prestasi"
+            class="text-3xl font-bold text-green-500 mt-2">
+
+                0
+
+            </h2>
+
+        </div>
+
+        <div class="card p-5">
+
+            <p class="text-gray-500">
+
+                Total Riwayat
+
+            </p>
+
+            <h2
+            id="riwayatCount"
+            class="text-3xl font-bold text-blue-500 mt-2">
+
+                0
+
+            </h2>
+
+        </div>
+
+    </div>
+
+    <!-- Chart -->
+
+    <div
+    class="card mt-6 p-6">
+
+        <h2
+        class="font-bold text-xl mb-4">
+
+            Statistik Poin
+
+        </h2>
+
+        <div class="h-80">
+
+            <canvas id="chart"></canvas>
+
+        </div>
+
+    </div>
+
+</div>
+<!-- ===================================================== -->
+<!-- RANKING -->
+<!-- ===================================================== -->
+
+<div id="ranking" class="p-6">
+
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+
+        <!-- Ranking Sekolah -->
+
+        <div class="card p-6">
+
+            <h2 class="text-xl font-bold mb-4">
+                🏆 Ranking Sekolah
+            </h2>
+
+            <div id="rankingSekolah">
+
+                <div class="text-gray-400">
+
+                    Memuat data...
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- Ranking Kelas -->
+
+        <div class="card p-6">
+
+            <div class="flex flex-col md:flex-row md:justify-between md:items-center gap-3 mb-4">
+
+                <h2 class="text-xl font-bold">
+
+                    🎓 Ranking Per Kelas
+
+                </h2>
+
+                <select
+                id="filterRankingKelas"
+                class="border p-2 rounded-lg">
+
+                    <option value="">
+
+                        Pilih Kelas
+
+                    </option>
+
+                </select>
+
+            </div>
+
+            <div id="rankingKelas">
+
+                <div class="text-gray-400">
+
+                    Pilih kelas terlebih dahulu
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- ===================================================== -->
+<!-- INPUT POIN -->
+<!-- ===================================================== -->
+
+<div id="input" class="p-6">
+
+    <div class="card p-6">
+
+        <h2 class="text-xl font-bold mb-5">
+
+            ➕ Input Poin Siswa
+
+        </h2>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+
+            <div>
+
+                <label class="block mb-1">
+
+                    Tanggal
+
+                </label>
+
+                <input
+                id="tanggal"
+                type="date"
+                class="w-full border p-3 rounded-lg">
+
+            </div>
+
+            <div>
+
+                <label class="block mb-1">
+
+                    Kelas
+
+                </label>
+
+                <select
+                id="kelas"
+                class="w-full border p-3 rounded-lg">
+
+                </select>
+
+            </div>
+
+            <div>
+
+                <label class="block mb-1">
+
+                    Nama Siswa
+
+                </label>
+
+                <select
+                id="siswa"
+                class="w-full border p-3 rounded-lg">
+
+                </select>
+
+            </div>
+
+            <div>
+
+                <label class="block mb-1">
+
+                    Jenis
+
+                </label>
+
+                <select
+                id="jenis"
+                class="w-full border p-3 rounded-lg">
+
+                    <option>
+
+                        Pelanggaran
+
+                    </option>
+
+                    <option>
+
+                        Prestasi
+
+                    </option>
+
+                </select>
+
+            </div>
+
+            <div>
+
+                <label class="block mb-1">
+
+                    Kategori
+
+                </label>
+
+                <select
+                id="kategori"
+                class="w-full border p-3 rounded-lg">
+
+                </select>
+
+            </div>
+
+            <div>
+
+                <label class="block mb-1">
+
+                    Poin
+
+                </label>
+
+                <input
+                id="poin"
+                readonly
+                class="w-full border p-3 rounded-lg bg-gray-100">
+
+            </div>
+
+        </div>
+
+        <div class="mt-4">
+
+            <label class="block mb-1">
+
+                Keterangan
+
+            </label>
+
+            <textarea
+            id="keterangan"
+            rows="3"
+            class="w-full border p-3 rounded-lg"></textarea>
+
+        </div>
+
+        <div class="mt-4">
+
+            <label class="block mb-1">
+
+                Link Bukti
+
+            </label>
+
+            <input
+            id="bukti"
+            type="text"
+            class="w-full border p-3 rounded-lg">
+
+        </div>
+
+        <button
+        onclick="simpan()"
+        class="mt-5 bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-3 rounded-lg">
+
+            Simpan Data
+
         </button>
 
     </div>
-</div>
 
 </div>
 
+<!-- ===================================================== -->
+<!-- BADGE SISWA -->
+<!-- ===================================================== -->
+
+<div id="badge" class="p-6">
+
+    <div class="card p-6">
+
+        <div class="flex justify-between items-center mb-5">
+
+            <h2 class="text-xl font-bold">
+
+                ⭐ Badge Siswa
+
+            </h2>
+
+        </div>
+
+        <div
+        id="badgeContainer"
+        class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- ===================================================== -->
+<!-- RIWAYAT -->
+<!-- ===================================================== -->
+
+<div id="riwayat" class="p-6">
+
+    <div class="card p-6">
+
+        <div class="flex flex-col md:flex-row md:justify-between gap-4 mb-5">
+
+            <h2 class="text-xl font-bold">
+
+                📋 Riwayat Poin Realtime
+
+            </h2>
+
+            <input
+            id="cariRiwayat"
+            type="text"
+            placeholder="Cari siswa..."
+            class="border p-3 rounded-lg">
+
+        </div>
+
+        <div class="overflow-x-auto">
+
+            <table class="min-w-[900px] w-full">
+
+                <thead>
+
+                    <tr class="bg-slate-100">
+
+                        <th class="p-3 text-left">
+                            Tanggal
+                        </th>
+
+                        <th class="p-3 text-left">
+                            Kelas
+                        </th>
+
+                        <th class="p-3 text-left">
+                            Nama
+                        </th>
+
+                        <th class="p-3 text-left">
+                            Jenis
+                        </th>
+
+                        <th class="p-3 text-left">
+                            Kategori
+                        </th>
+
+                        <th class="p-3 text-left">
+                            Poin
+                        </th>
+
+                        <th class="p-3 text-left">
+                            Keterangan
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody id="riwayatTable">
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</div>
+<!-- ===================================================== -->
+<!-- QR CODE SISWA -->
+<!-- ===================================================== -->
+
+<div id="qrsiswa" class="p-6">
+
+    <div class="card p-6">
+
+        <div class="flex justify-between items-center mb-5">
+
+            <h2 class="text-xl font-bold">
+
+                🔳 QR Code Siswa
+
+            </h2>
+
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+            <div>
+
+                <label class="block mb-2">
+
+                    Pilih Siswa
+
+                </label>
+
+                <select
+                id="qrSiswa"
+                class="w-full border p-3 rounded-lg">
+
+                </select>
+
+                <button
+                onclick="generateQR()"
+                class="mt-4 bg-indigo-600 hover:bg-indigo-700 text-white px-5 py-3 rounded-lg">
+
+                    Generate QR Code
+
+                </button>
+
+            </div>
+
+            <div>
+
+                <div
+                id="qrcode"
+                class="border rounded-xl bg-white min-h-[250px] flex items-center justify-center p-5">
+
+                    QR Code akan tampil di sini
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- ===================================================== -->
+<!-- DOKUMEN & LAPORAN -->
+<!-- ===================================================== -->
+
+<div id="dokumen" class="p-6">
+
+    <div class="card p-6">
+
+        <h2 class="text-xl font-bold mb-5">
+
+            📄 Dokumen & Laporan
+
+        </h2>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+
+            <button
+            onclick="exportPDF()"
+            class="bg-red-600 hover:bg-red-700 text-white p-4 rounded-xl">
+
+                📕 Export PDF
+
+            </button>
+
+            <button
+            onclick="exportExcel()"
+            class="bg-green-600 hover:bg-green-700 text-white p-4 rounded-xl">
+
+                📗 Export Excel
+
+            </button>
+
+            <button
+            onclick="cetakSuratTerpilih()"
+            class="bg-blue-600 hover:bg-blue-700 text-white p-4 rounded-xl">
+
+                📄 Surat Pemanggilan
+
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- ===================================================== -->
+<!-- MODAL SURAT PEMANGGILAN -->
+<!-- ===================================================== -->
+
+<div
+id="modalSurat"
+class="hidden fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
+
+    <div class="bg-white w-full max-w-3xl rounded-2xl p-6 max-h-[90vh] overflow-auto">
+
+        <div class="flex justify-between items-center mb-4">
+
+            <h2 class="text-xl font-bold">
+
+                Surat Pemanggilan Orang Tua
+
+            </h2>
+
+            <button
+            onclick="tutupSurat()"
+            class="text-red-500 text-xl">
+
+                ✕
+
+            </button>
+
+        </div>
+
+        <div
+        id="isiSurat"
+        class="border rounded-lg p-8 bg-white">
+
+            <div class="text-center">
+
+                <h1 class="font-bold text-2xl">
+
+                    SURAT PEMANGGILAN
+
+                </h1>
+
+                <p class="mt-2">
+
+                    SMK Negeri Kasomalang
+
+                </p>
+
+            </div>
+
+            <br>
+
+            <p>
+
+                Kepada Yth.
+                Orang Tua / Wali Siswa
+
+            </p>
+
+            <br>
+
+            <p>
+
+                Dengan hormat,
+
+                sehubungan dengan pembinaan peserta didik,
+                kami mengundang orang tua/wali siswa untuk hadir
+                ke sekolah guna membahas perkembangan siswa.
+
+            </p>
+
+            <br>
+
+            <div id="dataSurat">
+
+            </div>
+
+            <br>
+
+            <p>
+
+                Demikian surat ini kami sampaikan.
+                Atas perhatian dan kerja samanya,
+                kami ucapkan terima kasih.
+
+            </p>
+
+            <br><br>
+
+            <div class="text-right">
+
+                <p>
+
+                    Wakasek Kesiswaan
+
+                </p>
+
+                <br><br><br>
+
+                <p>
+
+                    ______________________
+
+                </p>
+
+            </div>
+
+        </div>
+
+        <div class="mt-5 flex gap-3">
+
+            <button
+            onclick="printSurat()"
+            class="bg-indigo-600 text-white px-5 py-3 rounded-lg">
+
+                🖨 Cetak Surat
+
+            </button>
+
+            <button
+            onclick="tutupSurat()"
+            class="bg-gray-500 text-white px-5 py-3 rounded-lg">
+
+                Tutup
+
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- ===================================================== -->
+<!-- FOOTER -->
+<!-- ===================================================== -->
+<!-- Background dibuat penuh sampai batas layar, padding horizontal menggunakan px-6 atau px-12 agar konten di dalamnya tetap rapi -->
+<footer class="bg-slate-950 text-white border-t border-slate-900 mt-12 w-full">
+    
+    <!-- Container Konten di dalam Footer (Membatasi lebar maksimal agar tetap rapi di layar lebar) -->
+    <div class="max-w-7xl mx-auto px-6 py-10">
+        
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            
+            <!-- Kolom 1: Logo KARMA & Deskripsi -->
+            <div class="space-y-3">
+                <!-- Penyesuaian Logo KARMA agar sinkron dengan Header -->
+                <h3 class="text-2xl font-black tracking-[0.15em] uppercase leading-none drop-shadow-[0_4px_12px_rgba(99,102,241,0.3)]">
+                    <span class="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-cyan-400">KAR</span><span class="font-light text-slate-200 tracking-[0.25em]">MA</span><span class="text-cyan-400">.</span>
+                </h3>
+                
+                <p class="text-xs opacity-70 leading-relaxed font-light tracking-wide max-w-xs">
+                    Monitoring pelanggaran, prestasi, dan pembinaan siswa berbasis digital.
+                </p>
+            </div>
+
+            <!-- Kolom 2: Menu Utama -->
+            <div>
+                <h3 class="font-bold text-sm tracking-wider uppercase text-slate-400">
+                    Menu Utama
+                </h3>
+                <ul class="mt-4 text-xs space-y-2.5 text-slate-300 font-medium">
+                    <li><a href="#dashboard" class="hover:text-cyan-400 transition-colors">Dashboard</a></li>
+                    <li><a href="#input" class="hover:text-cyan-400 transition-colors">Input Poin</a></li>
+                    <li><a href="#ranking" class="hover:text-cyan-400 transition-colors">Ranking</a></li>
+                    <li><a href="#riwayat" class="hover:text-cyan-400 transition-colors">Riwayat</a></li>
+                    <li><a href="#qrsiswa" class="hover:text-cyan-400 transition-colors">QR Code</a></li>
+                    <li><a href="#dokumen" class="hover:text-cyan-400 transition-colors">Dokumen</a></li>
+                </ul>
+            </div>
+
+            <!-- Kolom 3: Informasi Sekolah -->
+            <div>
+                <h3 class="font-bold text-sm tracking-wider uppercase text-slate-400">
+                    Sekolah
+                </h3>
+                <!-- Sub-teks Sekolah dengan Aksen Garis Khas Header -->
+                <div class="flex items-center gap-2 mt-4">
+                    <span class="w-3 h-[1px] bg-indigo-400/50"></span>
+                    <p class="text-xs font-bold tracking-wider text-slate-200 uppercase">
+                        SMK Negeri Kasomalang
+                    </p>
+                </div>
+                <p class="text-xs mt-2 opacity-60 font-light">
+                    Dashboard Monitoring Siswa
+                </p>
+            </div>
+
+        </div>
+
+        <!-- Garis Batas & Copyright -->
+        <div class="border-t border-slate-900 mt-10 pt-5 text-center text-xs tracking-wide text-slate-500">
+            © 2026 <span class="hover:text-slate-400 transition-colors cursor-pointer">SMK Negeri Kasomalang</span> • <span class="text-indigo-400 font-mono font-bold">RPL</span>
+        </div>
+
+    </div>
+</footer>
+<!-- END CONTENT -->
+
+</div>
+<!-- END FLEX -->
+
+</div>
+<!-- END APP -->
+
+<!-- ===================================================== -->
+<!-- LIBRARY -->
+<!-- ===================================================== -->
+
+<script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script>
 
-// ================= API =================
-const API = "https://script.google.com/macros/s/AKfycbz3b2deAMyH8kBkmLf1p11pSUM6HGWO-s8l3PCcAnsDncPEwMCAWEALRog_tcZr3ekp/exec";
+// =====================================================
+// KONFIGURASI API
+// =====================================================
 
-// ================= LOGIN =================
+const API =
+"https://script.google.com/macros/s/AKfycbxd3_j3itUkD9yJN6V2a0K6PP8n7Q9lETV_ZNMAUtYH4jkiE8XTLVIHOd8kP3fezR4lPw/exec";
+
+let siswaData = [];
+let masterData = [];
+let laporanData = [];
+let chart = null;
+
+// =====================================================
+// AUTO LOGIN
+// =====================================================
+
+window.onload = ()=>{
+
+    const role =
+    localStorage.getItem("role");
+
+    if(role){
+
+        roleBadge.innerText =
+        role;
+
+        loginPage.classList.add(
+            "hidden"
+        );
+
+        app.classList.remove(
+            "hidden"
+        );
+
+        init();
+    }
+
+};
+
+// =====================================================
+// LOGIN
+// =====================================================
+
 function login(){
 
-    const u = user.value;
-    const p = pass.value;
-
     const users = [
-        {u:"admin", p:"adminnekas", role:"admin"},
-        {u:"walikelas", p:"walinekas", role:"guru"}
+
+        {
+            u:"admin",
+            p:"1234",
+            role:"ADMIN"
+        },
+
+        {
+            u:"bk",
+            p:"1234",
+            role:"BK"
+        },
+
+        {
+            u:"walikelas",
+            p:"1234",
+            role:"WALI KELAS"
+        }
+
     ];
 
-    const f = users.find(x=>x.u===u && x.p===p);
+    const found =
 
-    if(!f){
-        msg.innerText = "Login gagal";
+    users.find(x=>
+
+        x.u===user.value &&
+        x.p===pass.value
+
+    );
+
+    if(!found){
+
+        msg.innerText =
+        "Username atau Password salah";
+
         return;
     }
 
-    localStorage.setItem("role", f.role);
+    localStorage.setItem(
+        "role",
+        found.role
+    );
 
-    loginPage.classList.add("hidden");
-    app.classList.remove("hidden");
+    roleBadge.innerText =
+    found.role;
 
-    roleBadge.innerText = f.role.toUpperCase();
+    loginPage.classList.add(
+        "hidden"
+    );
+
+    app.classList.remove(
+        "hidden"
+    );
 
     init();
+
 }
+
+// =====================================================
+// LOGOUT
+// =====================================================
 
 function logout(){
+
     localStorage.clear();
+
     location.reload();
+
 }
 
-// ================= DATA =================
-let siswaData = [];
-let masterData = [];
-let chart;
+// =====================================================
+// INIT
+// =====================================================
 
-// ================= INIT =================
 async function init(){
 
-    tanggal.value = new Date().toISOString().split('T')[0];
+    tanggal.value =
+
+    new Date()
+    .toISOString()
+    .split("T")[0];
 
     await loadSiswa();
+
     await loadMaster();
+
     await loadDashboard();
 
-    jenis.addEventListener("change", updateKategori);
-    kategori.addEventListener("change", autoPoin);
+    jenis.addEventListener(
+        "change",
+        updateKategori
+    );
+
+    kategori.addEventListener(
+        "change",
+        autoPoin
+    );
+
+    setInterval(()=>{
+
+        loadDashboard();
+
+    },30000);
+
 }
 
-// ================= SISWA =================
+// =====================================================
+// LOAD SISWA
+// =====================================================
+
 async function loadSiswa(){
 
-    let res = await fetch(API+"?action=siswa");
-    siswaData = await res.json();
+    try{
 
-    let kelasList = [...new Set(siswaData.map(x=>x.kelas))];
+        const res =
 
-    kelas.innerHTML = kelasList.map(k=>`<option>${k}</option>`).join('');
+        await fetch(
+            API + "?action=siswa"
+        );
 
-    filterSiswa();
+        siswaData =
+        await res.json();
 
-    kelas.onchange = filterSiswa;
+        const kelasList =
+
+        [...new Set(
+
+            siswaData.map(
+                x=>x.kelas
+            )
+
+        )];
+
+        kelas.innerHTML =
+
+        kelasList.map(k=>
+
+        `<option>${k}</option>`
+
+        ).join("");
+
+        filterRankingKelas.innerHTML =
+
+        '<option value="">Pilih Kelas</option>' +
+
+        kelasList.map(k=>
+
+        `<option>${k}</option>`
+
+        ).join("");
+
+        kelas.onchange =
+        filterSiswa;
+
+        filterSiswa();
+
+        qrSiswa.innerHTML =
+
+        siswaData.map(x=>
+
+        `<option>${x.nama}</option>`
+
+        ).join("");
+
+    }
+
+    catch(err){
+
+        console.log(err);
+
+    }
+
 }
+
+// =====================================================
+// FILTER SISWA
+// =====================================================
 
 function filterSiswa(){
 
-    let k = kelas.value;
+    const data =
 
-    let data = siswaData.filter(x=>x.kelas===k);
+    siswaData.filter(
 
-    siswa.innerHTML = data.map(s=>`<option>${s.nama}</option>`).join('');
+        x=>
+        x.kelas===
+        kelas.value
+
+    );
+
+    siswa.innerHTML =
+
+    data.map(x=>
+
+    `<option>${x.nama}</option>`
+
+    ).join("");
+
 }
 
-// ================= MASTER =================
+// =====================================================
+// LOAD MASTER
+// =====================================================
+
 async function loadMaster(){
 
-    let res = await fetch(API+"?action=master");
-    masterData = await res.json();
+    try{
 
-    updateKategori();
+        const res =
+
+        await fetch(
+            API+"?action=master"
+        );
+
+        masterData =
+        await res.json();
+
+        updateKategori();
+
+    }
+
+    catch(err){
+
+        console.log(err);
+
+    }
+
 }
 
-// ================= KATEGORI + POIN =================
+// =====================================================
+// UPDATE KATEGORI
+// =====================================================
+
 function updateKategori(){
 
-    let data = masterData.filter(m=>m.jenis===jenis.value);
+    const data =
 
-    kategori.innerHTML = data.map(d=>
-        `<option value="${d.kategori}" data-poin="${d.poin}">
-            ${d.kategori}
-        </option>`
-    ).join('');
+    masterData.filter(
+
+        x=>
+        x.jenis===
+        jenis.value
+
+    );
+
+    kategori.innerHTML =
+
+    data.map(x=>`
+
+    <option
+    value="${x.kategori}"
+    data-poin="${x.poin}">
+
+        ${x.kategori}
+
+    </option>
+
+    `).join("");
 
     autoPoin();
+
 }
+
+// =====================================================
+// AUTO POIN
+// =====================================================
 
 function autoPoin(){
 
-    if(kategori.options.length===0) return;
+    if(
+        kategori.options.length===0
+    ) return;
 
-    let p = kategori.options[kategori.selectedIndex].dataset.poin;
+    poin.value =
 
-    poin.value = p || 0;
+    kategori.options[
+        kategori.selectedIndex
+    ].dataset.poin;
+
 }
 
-// ================= DASHBOARD =================
+// =====================================================
+// LOAD DASHBOARD
+// =====================================================
+
 async function loadDashboard(){
 
-    let siswa = await (await fetch(API+"?action=siswa")).json();
-    let data = await (await fetch(API+"?action=laporan")).json();
+    try{
 
-    totalSiswa.innerText = siswa.length;
+        const res =
 
-    let pel = data.filter(x=>x[3]==="Pelanggaran").length;
-    let pre = data.filter(x=>x[3]==="Prestasi").length;
+        await fetch(
+            API+"?action=laporan"
+        );
 
-    pelanggaran.innerText = pel;
-    prestasi.innerText = pre;
-    riwayat.innerText = data.length;
+        laporanData =
+        await res.json();
+
+        totalSiswa.innerText =
+        siswaData.length;
+
+        const pelanggaranCount =
+
+        laporanData.filter(
+
+            x=>
+            x[3]==="Pelanggaran"
+
+        ).length;
+
+        const prestasiCount =
+
+        laporanData.filter(
+
+            x=>
+            x[3]==="Prestasi"
+
+        ).length;
+
+        pelanggaran.innerText =
+        pelanggaranCount;
+
+        prestasi.innerText =
+        prestasiCount;
+
+        riwayatCount.innerText =
+        laporanData.length;
+
+        loadRanking();
+        loadRiwayat();
+        loadChart();
+
+    }
+
+    catch(err){
+
+        console.log(err);
+
+    }
+
+}
+
+// =====================================================
+// RANKING SEKOLAH
+// =====================================================
+
+function loadRanking(){
 
     let map = {};
 
-    data.forEach(r=>{
-        let n=r[2];
-        let p=parseInt(r[5])||0;
-        map[n]=(map[n]||0)+p;
+    laporanData.forEach(x=>{
+
+        if(x[3]!=="Pelanggaran")
+            return;
+
+        const nama =
+        x[2];
+
+        const poin =
+        parseInt(x[5]) || 0;
+
+        map[nama] =
+        (map[nama]||0)+poin;
+
     });
 
-    let sorted = Object.entries(map)
-        .sort((a,b)=>b[1]-a[1])
-        .slice(0,5);
+    const ranking =
 
-    ranking.innerHTML = sorted.map((x,i)=>
-        `<div class="flex justify-between border-b py-2">
-            <span>${i+1}. ${x[0]}</span>
-            <b class="text-red-500">${x[1]}</b>
-        </div>`
-    ).join('');
+    Object.entries(map)
 
-    let labels = sorted.map(x=>x[0]);
-    let values = sorted.map(x=>x[1]);
+    .sort((a,b)=>
 
-    if(chart) chart.destroy();
+        b[1]-a[1]
 
-    chart = new Chart(document.getElementById("chart"),{
-        type:"bar",
-        data:{
-            labels,
-            datasets:[{
-                label:"Poin",
-                data:values,
-                backgroundColor:"rgba(59,130,246,0.6)"
-            }]
-        }
-    });
+    )
+
+    .slice(0,10);
+
+    rankingSekolah.innerHTML =
+
+    ranking.map((r,i)=>`
+
+    <div
+    class="flex justify-between border-b py-3">
+
+        <span>
+            ${i+1}. ${r[0]}
+        </span>
+
+        <b class="text-red-500">
+            ${r[1]}
+        </b>
+
+    </div>
+
+    `).join("");
+
 }
 
-// ================= SIMPAN =================
-async function simpan(){
+// =====================================================
+// CHART
+// =====================================================
 
-    let data = {
-        tanggal,
-        kelas:kelas.value,
-        siswa:siswa.value,
-        jenis:jenis.value,
-        kategori:kategori.value,
-        poin:poin.value,
-        keterangan:keterangan.value,
-        bukti:bukti.value
-    };
+function loadChart(){
 
-    await fetch(API,{
-        method:"POST",
-        body:JSON.stringify(data)
+    let map = {};
+
+    laporanData.forEach(x=>{
+
+        if(x[3]!=="Pelanggaran")
+            return;
+
+        const nama =
+        x[2];
+
+        const poin =
+        parseInt(x[5]) || 0;
+
+        map[nama] =
+        (map[nama]||0)+poin;
+
     });
 
-    alert("Tersimpan!");
+    const top =
 
-    loadDashboard();
+    Object.entries(map)
+
+    .sort((a,b)=>
+
+        b[1]-a[1]
+
+    )
+
+    .slice(0,10);
+
+    const labels =
+    top.map(x=>x[0]);
+
+    const values =
+    top.map(x=>x[1]);
+
+    if(chart)
+        chart.destroy();
+
+    chart = new Chart(
+
+        document.getElementById(
+            "chart"
+        ),
+
+        {
+
+            type:"bar",
+
+            data:{
+
+                labels,
+
+                datasets:[{
+
+                    label:"Total Poin",
+
+                    data:values
+
+                }]
+
+            },
+
+            options:{
+                responsive:true,
+                maintainAspectRatio:false
+            }
+
+        }
+
+    );
+
+}
+
+// =====================================================
+// RIWAYAT
+// =====================================================
+
+function loadRiwayat(){
+
+    riwayatTable.innerHTML =
+
+    [...laporanData]
+
+    .reverse()
+
+    .map(x=>`
+
+    <tr class="border-b">
+
+        <td class="p-3">${x[0]}</td>
+        <td class="p-3">${x[1]}</td>
+        <td class="p-3">${x[2]}</td>
+        <td class="p-3">${x[3]}</td>
+        <td class="p-3">${x[4]}</td>
+        <td class="p-3">${x[5]}</td>
+        <td class="p-3">${x[6]||''}</td>
+
+    </tr>
+
+    `).join("");
+
+}
+
+// =====================================================
+// SIMPAN DATA
+// =====================================================
+
+async function simpan(){
+
+    const data = {
+
+        tanggal:
+        tanggal.value,
+
+        kelas:
+        kelas.value,
+
+        siswa:
+        siswa.value,
+
+        jenis:
+        jenis.value,
+
+        kategori:
+        kategori.value,
+
+        poin:
+        poin.value,
+
+        keterangan:
+        keterangan.value,
+
+        bukti:
+        bukti.value
+
+    };
+
+    try{
+
+        await fetch(API,{
+
+            method:"POST",
+
+            body:
+            JSON.stringify(data)
+
+        });
+
+        alert(
+            "Data berhasil disimpan"
+        );
+
+        keterangan.value = "";
+        bukti.value = "";
+
+        loadDashboard();
+
+    }
+
+    catch(err){
+
+        alert(
+            "Gagal menyimpan data"
+        );
+
+        console.log(err);
+
+    }
+
 }
 
 </script>
+<script>
+
+// =====================================================
+// RANKING PER KELAS
+// =====================================================
+
+filterRankingKelas?.addEventListener(
+    "change",
+    rankingPerKelas
+);
+
+function rankingPerKelas(){
+
+    const kelasDipilih =
+    filterRankingKelas.value;
+
+    if(!kelasDipilih){
+
+        rankingKelas.innerHTML = `
+        <div class="text-gray-400">
+            Pilih kelas terlebih dahulu
+        </div>`;
+
+        return;
+    }
+
+    let map = {};
+
+    laporanData
+
+    .filter(x=>
+
+        x[1]===kelasDipilih &&
+        x[3]==="Pelanggaran"
+
+    )
+
+    .forEach(x=>{
+
+        const nama =
+        x[2];
+
+        const poin =
+        parseInt(x[5]) || 0;
+
+        map[nama] =
+        (map[nama]||0)+poin;
+
+    });
+
+    const hasil =
+
+    Object.entries(map)
+
+    .sort((a,b)=>
+
+        b[1]-a[1]
+
+    );
+
+    rankingKelas.innerHTML =
+
+    hasil.map((x,i)=>`
+
+    <div
+    class="flex justify-between border-b py-3">
+
+        <span>
+            ${i+1}. ${x[0]}
+        </span>
+
+        <b class="text-indigo-600">
+            ${x[1]}
+        </b>
+
+    </div>
+
+    `).join("");
+
+}
+
+// =====================================================
+// BADGE SISWA
+// =====================================================
+
+function getBadge(total){
+
+    if(total<=0)
+        return "🌟 Siswa Teladan";
+
+    if(total<=20)
+        return "👍 Baik";
+
+    if(total<=50)
+        return "⚠ Pembinaan";
+
+    if(total<=100)
+        return "📄 SP 1";
+
+    if(total<=150)
+        return "📄 SP 2";
+
+    return "🚫 Pemanggilan Orang Tua";
+
+}
+
+function loadBadge(){
+
+    let map = {};
+
+    laporanData.forEach(x=>{
+
+        if(x[3]!=="Pelanggaran")
+            return;
+
+        const nama =
+        x[2];
+
+        const poin =
+        parseInt(x[5]) || 0;
+
+        map[nama] =
+        (map[nama]||0)+poin;
+
+    });
+
+    badgeContainer.innerHTML =
+
+    Object.entries(map)
+
+    .sort((a,b)=>a[1]-b[1])
+
+    .slice(0,12)
+
+    .map(x=>`
+
+    <div
+    class="border rounded-xl p-4">
+
+        <div class="font-bold">
+            ${x[0]}
+        </div>
+
+        <div class="mt-3 text-lg">
+            ${getBadge(x[1])}
+        </div>
+
+        <div class="mt-2 text-sm text-gray-500">
+            Total Poin :
+            ${x[1]}
+        </div>
+
+    </div>
+
+    `).join("");
+
+}
+
+// =====================================================
+// QR CODE
+// =====================================================
+
+function generateQR(){
+
+    const nama =
+    qrSiswa.value;
+
+    if(!nama){
+
+        alert(
+            "Pilih siswa terlebih dahulu"
+        );
+
+        return;
+    }
+
+    const siswaObj =
+
+    siswaData.find(
+        x=>x.nama===nama
+    );
+
+    if(!siswaObj)
+        return;
+
+    qrcode.innerHTML="";
+
+    const dataQR =
+
+    JSON.stringify({
+
+        nama:siswaObj.nama,
+        kelas:siswaObj.kelas
+
+    });
+
+    QRCode.toCanvas(
+
+        dataQR,
+
+        function(err,canvas){
+
+            if(err){
+
+                console.log(err);
+                return;
+
+            }
+
+            qrcode.appendChild(
+                canvas
+            );
+
+        }
+
+    );
+
+}
+
+// =====================================================
+// EXPORT PDF
+// =====================================================
+
+function exportPDF(){
+
+    const { jsPDF } =
+    window.jspdf;
+
+    const doc =
+    new jsPDF();
+
+    doc.setFontSize(16);
+
+    doc.text(
+        "Laporan Sistem Poin Sekolah",
+        15,
+        20
+    );
+
+    let y = 35;
+
+    laporanData.forEach(x=>{
+
+        doc.setFontSize(10);
+
+        doc.text(
+
+            `${x[0]} | ${x[2]} | ${x[3]} | ${x[5]}`,
+
+            15,
+            y
+
+        );
+
+        y += 7;
+
+        if(y>270){
+
+            doc.addPage();
+            y=20;
+
+        }
+
+    });
+
+    doc.save(
+        "laporan-poin.pdf"
+    );
+
+}
+
+// =====================================================
+// EXPORT EXCEL
+// =====================================================
+
+function exportExcel(){
+
+    window.open(
+        API + "?action=export"
+    );
+
+}
+
+// =====================================================
+// SURAT PEMANGGILAN
+// =====================================================
+
+function cetakSuratTerpilih(){
+
+    const nama = prompt(
+        "Masukkan nama siswa"
+    );
+
+    if(!nama)
+        return;
+
+    let total = 0;
+
+    laporanData.forEach(x=>{
+
+        if(x[2]===nama){
+
+            total +=
+            parseInt(x[5]) || 0;
+
+        }
+
+    });
+
+    dataSurat.innerHTML = `
+
+    <p>
+        Nama Siswa :
+        <b>${nama}</b>
+    </p>
+
+    <br>
+
+    <p>
+        Total Poin :
+        <b>${total}</b>
+    </p>
+
+    <br>
+
+    <p>
+        Orang tua/wali diharapkan
+        hadir ke sekolah untuk
+        pembinaan siswa.
+    </p>
+
+    `;
+
+    modalSurat.classList.remove(
+        "hidden"
+    );
+
+}
+
+function tutupSurat(){
+
+    modalSurat.classList.add(
+        "hidden"
+    );
+
+}
+
+function printSurat(){
+
+    const isi =
+    isiSurat.innerHTML;
+
+    const win =
+    window.open();
+
+    win.document.write(`
+
+    <html>
+    <head>
+        <title>Surat Pemanggilan</title>
+    </head>
+    <body style="font-family:Arial;padding:30px;">
+        ${isi}
+    </body>
+    </html>
+
+    `);
+
+    win.document.close();
+    win.print();
+
+}
+
+// =====================================================
+// SEARCH RIWAYAT
+// =====================================================
+
+cariRiwayat?.addEventListener(
+
+    "keyup",
+
+    function(){
+
+        const keyword =
+
+        this.value
+        .toLowerCase();
+
+        const rows =
+
+        riwayatTable
+        .querySelectorAll("tr");
+
+        rows.forEach(row=>{
+
+            row.style.display =
+
+            row.innerText
+            .toLowerCase()
+            .includes(keyword)
+
+            ? ""
+
+            : "none";
+
+        });
+
+    }
+
+);
+
+// =====================================================
+// DARK MODE
+// =====================================================
+
+function toggleDark(){
+
+    document.body.classList.toggle(
+        "dark"
+    );
+
+}
+
+// =====================================================
+// =====================================================
+// OVERRIDE DASHBOARD
+// =====================================================
+
+const oldDashboard =
+loadDashboard;
+
+loadDashboard =
+async function(){
+
+    await oldDashboard();
+
+    loadBadge();
+
+    if(
+        filterRankingKelas &&
+        filterRankingKelas.value
+    ){
+
+        rankingPerKelas();
+
+    }
+
+};
+
+// =====================================================
+// READY
+// =====================================================
+
+console.log(
+"Sistem Poin Sekolah Ready"
+);
+
+</script>
+
+<!-- ===================================================== -->
 
 </body>
 </html>
