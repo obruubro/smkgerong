@@ -71,6 +71,25 @@ body {
     border: 1px solid rgba(139, 92, 246, 0.1);
 }
 
+/* Memaksa elemen option di dalam select untuk mengikuti tema gelap */
+@media (prefers-color-scheme: dark) {
+  select option {
+    background-color: white; /* Sesuaikan dengan warna background gelap Anda */
+    color: #1e1b4b;
+  }
+}
+
+/* Jika menggunakan class .dark dari Tailwind */
+.dark select {
+  background-color: #2e1065 !important; /* Warna background select */
+  color: white !important;
+}
+
+.dark select option {
+  background-color: #2e1065 !important; /* Warna background list option */
+  color: white !important;
+}
+
 /* Premium Shadows & Glows */
 .purple-glow {
     box-shadow: 0 0 30px rgba(139, 92, 246, 0.15);
@@ -319,14 +338,31 @@ details summary::-webkit-details-marker {
                         <h2 class="text-xl font-extrabold text-slate-800 dark:text-white">Dashboard & Statistik Laporan</h2>
                     </div>
                 </summary>
-                <div class="mt-8 pt-6 border-t border-slate-100 dark:border-purple-950/60 space-y-8">
+              <div class="mt-8 pt-6 border-t border-slate-100 dark:border-purple-950/60 space-y-8">
                     <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
-                        <div class="p-5 bg-gradient-to-br from-white to-brand-50/50 rounded-2xl border dark:bg-purple-950/25 dark:border-purple-900/30"><p class="text-xs font-bold text-slate-400 uppercase tracking-wider">Total Siswa</p><h2 id="totalSiswa" class="text-3xl font-extrabold mt-2 text-slate-800 dark:text-white">0</h2></div>
-                        <div class="p-5 bg-gradient-to-br from-white to-rose-50/20 rounded-2xl border dark:bg-purple-950/25 dark:border-purple-900/30"><p class="text-xs font-bold text-slate-400 uppercase tracking-wider">Poin Pelanggaran</p><h2 id="pelanggaran" class="text-3xl font-extrabold text-rose-500 mt-2">0</h2></div>
-                        <div class="p-5 bg-gradient-to-br from-white to-emerald-50/20 rounded-2xl border dark:bg-purple-950/25 dark:border-purple-900/30"><p class="text-xs font-bold text-slate-400 uppercase tracking-wider">Poin Prestasi</p><h2 id="prestasi" class="text-3xl font-extrabold text-emerald-500 mt-2">0</h2></div>
-                        <div class="p-5 bg-gradient-to-br from-white to-indigo-50/20 rounded-2xl border dark:bg-purple-950/25 dark:border-purple-900/30"><p class="text-xs font-bold text-slate-400 uppercase tracking-wider">Total Riwayat</p><h2 id="riwayatCount" class="text-3xl font-extrabold text-indigo-500 mt-2">0</h2></div>
+                        
+                        <div class="p-5 bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-purple-900/30">
+                        <p class="text-xs font-bold text-slate-400 dark:text-slate-400 uppercase tracking-wider">Total Siswa</p>
+                        <h2 id="totalSiswa" class="text-3xl font-extrabold mt-2 text-slate-800 dark:text-white">0</h2>
+                        </div>
+
+                        <div class="p-5 bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-purple-900/30">
+                        <p class="text-xs font-bold text-slate-400 dark:text-slate-400 uppercase tracking-wider">Poin Pelanggaran</p>
+                        <h2 id="pelanggaran" class="text-3xl font-extrabold text-rose-500 mt-2">0</h2>
+                        </div>
+
+                        <div class="p-5 bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-purple-900/30">
+                        <p class="text-xs font-bold text-slate-400 dark:text-slate-400 uppercase tracking-wider">Poin Prestasi</p>
+                        <h2 id="prestasi" class="text-3xl font-extrabold text-emerald-500 mt-2">0</h2>
+                        </div>
+
+                        <div class="p-5 bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-purple-900/30">
+                        <p class="text-xs font-bold text-slate-400 dark:text-slate-400 uppercase tracking-wider">Total Riwayat</p>
+                        <h2 id="riwayatCount" class="text-3xl font-extrabold text-indigo-500 mt-2">0</h2>
+                        </div>
+
                     </div>
-                </div>
+                    </div>
             </details>
         </section>
 
@@ -439,7 +475,7 @@ details summary::-webkit-details-marker {
     </main>
 
     <!-- FOOTER -->
-    <footer class="bg-gradient-to-t from-[#09051c] to-[#0c0822] text-white border-t border-purple-950/30 mt-16 py-8 text-center text-xs text-slate-500"><p>© 2026 <span class="font-bold">SMK Negeri Kasomalang</span>. All rights reserved.</p></footer>
+    <footer class="bg-gradient-to-t from-[#09051c] to-[#0c0822] text-white border-t border-purple-950/30 mt-16 py-8 text-center text-xs text-slate-500"><p>© 2026 <span class="font-bold">KARMA.</span> RPL - SMKN Kasomalang.</p></footer>
 </div>
 
 <!-- ===================================================== -->
