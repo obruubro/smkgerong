@@ -1840,7 +1840,7 @@ function exportPDF(){
     doc.setFontSize(16);
 
     doc.text(
-        "Laporan Sistem Poin Sekolah",
+        "(KARMA) Laporan Sistem Poin Sekolah",
         15,
         20
     );
@@ -1853,7 +1853,7 @@ function exportPDF(){
 
         doc.text(
 
-            `${x[0]} | ${x[2]} | ${x[3]} | ${x[5]}`,
+            `${x[0]} | ${x[1]} | ${x[2]} | ${x[3]} | ${x[5]}`,
 
             15,
             y
@@ -1895,62 +1895,64 @@ function exportExcel(){
 
 function cetakSuratTerpilih(){
 
-    const nama = prompt(
-        "Masukkan nama siswa"
-    );
+const nama = prompt("Masukkan nama siswa:");
+    if(!nama) return;
 
-    if(!nama)
-        return;
+    // Tambahan input untuk Kelas dan Tanggal Pemanggilan
+    const kelas = prompt("Masukkan kelas siswa (contoh: XI RPL 1):");
+    if(!kelas) return;
+
+    const tglPanggilan = prompt("Masukkan tanggal kehadiran (contoh: Senin, 29 Juni 2026):");
+    if(!tglPanggilan) return;
 
     let total = 0;
 
     laporanData.forEach(x=>{
-
         if(x[2]===nama){
-
-            total +=
-            parseInt(x[5]) || 0;
-
+            total += parseInt(x[5]) || 0;
         }
-
     });
 
     dataSurat.innerHTML = `
-
-    <p>
-        Nama Siswa :
-        <b>${nama}</b>
-    </p>
-
-    <br>
-
-    <p>
-        Total Poin :
-        <b>${total}</b>
-    </p>
-
-    <br>
-
-    <p>
-        Orang tua/wali diharapkan
-        hadir ke sekolah untuk
-        pembinaan siswa.
-    </p>
-
+    <div style="background-color: #f9fafb; padding: 16px; border-radius: 6px; border: 1px solid #f3f4f6; margin-bottom: 24px;">
+        <table style="width: 100%; border-collapse: collapse; font-size: 14px; text-align: left;">
+            <tbody>
+                <tr style="vertical-align: top;">
+                    <td style="width: 130px; padding-bottom: 8px; color: #4b5563;">Nama Siswa</td>
+                    <td style="width: 15px; padding-bottom: 8px; text-align: center; color: #9ca3af;">:</td>
+                    <td style="padding-bottom: 8px; font-weight: bold; color: #111827;">${nama}</td>
+                </tr>
+                <tr style="vertical-align: top;">
+                    <td style="padding-bottom: 8px; color: #4b5563;">Kelas</td>
+                    <td style="padding-bottom: 8px; text-align: center; color: #9ca3af;">:</td>
+                    <td style="padding-bottom: 8px; font-weight: bold; color: #111827;">${kelas}</td>
+                </tr>
+                <tr style="vertical-align: top;">
+                    <td style="padding-bottom: 8px; color: #4b5563;">Akumulasi Poin</td>
+                    <td style="padding-bottom: 8px; text-align: center; color: #9ca3af;">:</td>
+                    <td style="padding-bottom: 8px; font-weight: bold; color: #dc2626;">${total} Poin</td>
+                </tr>
+                <tr style="vertical-align: top;">
+                    <td style="padding-bottom: 8px; color: #4b5563;">Hari, Tanggal</td>
+                    <td style="padding-bottom: 8px; text-align: center; color: #9ca3af;">:</td>
+                    <td style="padding-bottom: 8px; font-weight: bold; color: #111827;">${tglPanggilan}</td>
+                </tr>
+                <tr style="vertical-align: top;">
+                    <td style="padding-bottom: 8px; color: #4b5563;">Waktu</td>
+                    <td style="padding-bottom: 8px; text-align: center; color: #9ca3af;">:</td>
+                    <td style="padding-bottom: 8px; font-weight: bold; color: #111827;">09.00 WIB s.d Selesai</td>
+                </tr>
+                <tr style="vertical-align: top;">
+                    <td style="color: #4b5563;">Tempat</td>
+                    <td style="text-align: center; color: #9ca3af;">:</td>
+                    <td style="font-weight: bold; color: #111827;">Ruang Kesiswaan / BK SMK Negeri Kasomalang</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
     `;
 
-    modalSurat.classList.remove(
-        "hidden"
-    );
-
-}
-
-function tutupSurat(){
-
-    modalSurat.classList.add(
-        "hidden"
-    );
-
+    modalSurat.classList.remove("hidden");
 }
 
 function printSurat(){
