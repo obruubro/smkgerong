@@ -779,6 +779,21 @@ id="modalSurat"
 class="hidden fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
 
     <div class="bg-white w-full max-w-3xl rounded-2xl p-6 max-h-[90vh] overflow-auto">
+        <!-- Bagian Header Modal -->
+        <div class="flex justify-between items-center mb-4">
+            <h2 class="text-xl font-bold text-gray-800">
+                Surat Pemanggilan Orang Tua
+            </h2>
+            <!-- Tombol Close X di Atas -->
+            <button 
+                onclick="tutupSurat()" 
+                class="text-gray-400 hover:text-red-500 text-2xl font-semibold transition-colors duration-200 focus:outline-none"
+                title="Tutup">
+                ✕
+            </button>
+        </div>
+
+        <!-- Isi Surat -->
 
         <div class="flex justify-between items-center mb-4">
 
@@ -884,14 +899,6 @@ class="hidden fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-
             class="bg-indigo-600 text-white px-5 py-3 rounded-lg">
 
                 🖨 Cetak Surat
-
-            </button>
-
-            <button
-            onclick="tutupSurat()"
-            class="bg-gray-500 text-white px-5 py-3 rounded-lg">
-
-                Tutup
 
             </button>
 
@@ -1770,59 +1777,46 @@ function loadBadge(){
 
 function generateQR(){
 
-    const nama =
-    qrSiswa.value;
+    const nama = qrSiswa.value;
 
     if(!nama){
-
-        alert(
-            "Pilih siswa terlebih dahulu"
-        );
-
+        alert("Pilih siswa terlebih dahulu");
         return;
     }
 
-    const siswaObj =
+    const siswaObj = siswaData.find(x=>x.nama===nama);
 
-    siswaData.find(
-        x=>x.nama===nama
-    );
+    if(!siswaObj) return;
 
-    if(!siswaObj)
-        return;
+    // --- HITUNG REKAP POIN SISWA ---
+    let totalPoin = 0;
+    // Mencari dan menjumlahkan poin dari laporanData berdasarkan nama siswa
+    laporanData.forEach(x => {
+        if(x[2] === nama){ // x[2] adalah kolom nama siswa di laporanData
+            totalPoin += parseInt(x[5]) || 0; // x[5] adalah kolom poin
+        }
+    });
+    // -------------------------------
 
     qrcode.innerHTML="";
 
-    const dataQR =
-
-    JSON.stringify({
-
-        nama:siswaObj.nama,
-        kelas:siswaObj.kelas
-
+    // Masukkan total poin ke dalam objek data QR
+    const dataQR = JSON.stringify({
+        nama: siswaObj.nama,
+        kelas: siswaObj.kelas,
+        total_poin: totalPoin // Rekap poin berhasil ditambahkan ke QR
     });
 
     QRCode.toCanvas(
-
         dataQR,
-
-        function(err,canvas){
-
+        function(err, canvas){
             if(err){
-
                 console.log(err);
                 return;
-
             }
-
-            qrcode.appendChild(
-                canvas
-            );
-
+            qrcode.appendChild(canvas);
         }
-
     );
-
 }
 
 // =====================================================
