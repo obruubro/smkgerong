@@ -776,136 +776,63 @@ class="p-6">
 
 <div
 id="modalSurat"
-class="hidden fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
+class="hidden fixed inset-0 bg-black/50 z-50 items-center justify-center p-4">
 
     <div class="bg-white w-full max-w-3xl rounded-2xl p-6 max-h-[90vh] overflow-auto">
+
+
+        <!-- Isi Surat -->
+
         <!-- Bagian Header Modal -->
         <div class="flex justify-between items-center mb-4">
             <h2 class="text-xl font-bold text-gray-800">
                 Surat Pemanggilan Orang Tua
             </h2>
-            <!-- Tombol Close X di Atas -->
-            <button 
-                onclick="tutupSurat()" 
-                class="text-gray-400 hover:text-red-500 text-2xl font-semibold transition-colors duration-200 focus:outline-none"
-                title="Tutup">
-                ✕
-            </button>
+
         </div>
 
         <!-- Isi Surat -->
-
-        <div class="flex justify-between items-center mb-4">
-
-            <h2 class="text-xl font-bold">
-
-                Surat Pemanggilan Orang Tua
-
-            </h2>
-
-            <button
-            onclick="tutupSurat()"
-            class="text-red-500 text-xl">
-
-                ✕
-
-            </button>
-
-        </div>
-
-        <div
-        id="isiSurat"
-        class="border rounded-lg p-8 bg-white">
-
+        <div id="isiSurat" class="border rounded-lg p-8 bg-white">
             <div class="text-center">
-
-                <h1 class="font-bold text-2xl">
-
-                    SURAT PEMANGGILAN
-
-                </h1>
-
-                <p class="mt-2">
-
-                    SMK Negeri Kasomalang
-
-                </p>
-
+                <h1 class="font-bold text-2xl">SURAT PEMANGGILAN</h1>
+                <p class="mt-2">SMK Negeri Kasomalang</p>
             </div>
-
             <br>
-
-            <p>
-
-                Kepada Yth.
-                Orang Tua / Wali Siswa
-
-            </p>
-
+            <p>Kepada Yth. Orang Tua / Wali Siswa</p>
             <br>
-
             <p>
-
-                Dengan hormat,
-
-                Sehubungan dengan program pembinaan berkelanjutan dan pemantauan perkembangan peserta didik di SMK Negeri Kasomalang, 
+                Dengan hormat, sehubungan dengan program pembinaan berkelanjutan dan pemantauan perkembangan peserta didik di SMK Negeri Kasomalang, 
                 kami bermaksud mengundang Bapak/Ibu Orang Tua/Wali siswa untuk hadir ke sekolah. Pertemuan ini bertujuan 
                 untuk bersilaturahmi sekaligus menyelaraskan pembinaan terkait perkembangan akademik serta catatan kedisiplinan putra/putri Bapak/Ibu.
             </p>
-
             <br>
-
-            <div id="dataSurat">
-
-            </div>
-
+            <div id="dataSurat"></div>
             <br>
-
             <p>
-
                 Mengingat pentingnya pembahasan ini demi kebaikan dan kelancaran proses belajar putra/putri 
                 Bapak/Ibu di masa depan, kehadiran Bapak/Ibu sangat kami harapkan dan mohon untuk tidak diwakilkan.
                 Demikian surat undangan ini kami sampaikan. Atas perhatian, kehadiran, 
                 dan kerja sama yang baik dari Bapak/Ibu, kami ucapkan terima kasih.
-
             </p>
-
             <br><br>
-
             <div class="text-right">
-
-                <p>
-
-                    Wakasek Kesiswaan
-
-                </p>
-
+                <p>Wakasek Kesiswaan</p>
                 <br><br><br>
-
-                <p>
-
-                    ______________________
-
-                </p>
-
+                <p>______________________</p>
             </div>
-
         </div>
 
+        <!-- Tombol Aksi Bawah -->
         <div class="mt-5 flex gap-3">
-
-            <button
-            onclick="printSurat()"
-            class="bg-indigo-600 text-white px-5 py-3 rounded-lg">
-
+            <button onclick="printSurat()" class="bg-indigo-600 text-white px-5 py-3 rounded-lg">
                 🖨 Cetak Surat
-
             </button>
-
+            <button onclick="tutupSurat()" class="bg-gray-500 text-white px-5 py-3 rounded-lg">
+                Tutup
+            </button>
         </div>
 
     </div>
-
 </div>
 
 <!-- ===================================================== -->
@@ -1886,10 +1813,9 @@ function exportExcel(){
 // =====================================================
 // SURAT PEMANGGILAN
 // =====================================================
-
 function cetakSuratTerpilih(){
 
-const nama = prompt("Masukkan nama siswa:");
+    const nama = prompt("Masukkan nama siswa:");
     if(!nama) return;
 
     // Tambahan input untuk Kelas dan Tanggal Pemanggilan
@@ -1946,19 +1872,28 @@ const nama = prompt("Masukkan nama siswa:");
     </div>
     `;
 
-    modalSurat.classList.remove("hidden");
+    // Ambil elemen secara langsung dan ganti hidden dengan flex agar posisi ke tengah layar
+    const modal = document.getElementById("modalSurat");
+    if(modal) {
+        modal.classList.remove("hidden");
+        modal.classList.add("flex");
+    }
+}
+
+// Tambahkan fungsi penutup ini di bawahnya
+function tutupSurat() {
+    const modal = document.getElementById("modalSurat");
+    if(modal) {
+        modal.classList.remove("flex");
+        modal.classList.add("hidden");
+    }
 }
 
 function printSurat(){
-
-    const isi =
-    isiSurat.innerHTML;
-
-    const win =
-    window.open();
+    const isi = isiSurat.innerHTML;
+    const win = window.open();
 
     win.document.write(`
-
     <html>
     <head>
         <title>Surat Pemanggilan</title>
@@ -1967,14 +1902,11 @@ function printSurat(){
         ${isi}
     </body>
     </html>
-
     `);
 
     win.document.close();
     win.print();
-
 }
-
 // =====================================================
 // SEARCH RIWAYAT
 // =====================================================
