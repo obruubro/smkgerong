@@ -281,14 +281,124 @@
             setTimeout(() => { printWindow.print(); }, 500);
         };
 
-        window.renderDashboard = () => { const points = {}; dataTransaksi.forEach(t => { points[t.siswaId] = (points[t.siswaId] || 0) + parseInt(t.poin || 0); }); const ranking = dataSiswa.map(s => ({...s, total: points[s.id] || 0})).filter(s => s.total > 0).sort((a,b) => b.total - a.total).slice(0, 5); document.getElementById('dashboard-ranking').innerHTML = ranking.length ? ranking.map((s,i) => `<div class="flex justify-between p-3 bg-white border border-slate-100 rounded-2xl shadow-sm"><span>${i+1}. ${s.name}</span><b class="text-red-600">${s.total} Poin</b></div>`).join('') : '<p class="text-slate-400 text-sm">Belum ada pelanggaran</p>'; const history = [...dataTransaksi].sort((a,b) => b.date.localeCompare(a.date)).slice(0, 5); document.getElementById('dashboard-history').innerHTML = history.length ? history.map(t => { const s = dataSiswa.find(x => x.id === t.siswaId); return `<div class="p-3 bg-white border border-slate-100 rounded-2xl shadow-sm text-sm"><div class="flex justify-between font-bold"><span>${s?.name || 'Siswa'}</span><span class="text-red-600">${t.poin} Poin</span></div><p class="text-slate-500 text-xs">${t.kategori} • ${t.date}</p></div>`; }).join('') : '<p class="text-slate-400 text-sm">Belum ada riwayat</p>'; };
+window.renderDashboard = () => {
+  // Fungsi hitung waktu lalu yang kebal masalah perbedaan zona waktu (Timezone)
+  const hitungWaktuLalu = (dateString) => {
+    try {
+      if (!dateString) return '';
+      
+      // Mengubah string tanggal input menjadi angka milidetik lokal
+      const waktuInput = new Date(dateString).getTime();
+      // Mengambil angka milidetik waktu sekarang
+      const sekarang = new Date().getTime();
+      
+      if (isNaN(waktuInput)) return dateString;
+
+      // Hitung selisih mutlak dalam detik
+      const selisihDetik = Math.floor((sekarang - waktuInput) / 1000);
+
+      // Antisipasi jika ada selisih sekian milidetik komputer yang membuatnya minus
+      if (selisihDetik < 60) return 'Baru saja';
+      
+      const selisihMenit = Math.floor(selisihDetik / 60);
+      if (selisihMenit < 60) return `${selisihMenit} menit yang lalu`;
+      
+      const selisihJam = Math.floor(selisihMenit / 60);
+      if (selisihJam < 24) return `${selisihJam} jam yang lalu`;
+      
+      const selisihHari = Math.floor(selisihJam / 24);
+      if (selisihHari === 1) return 'Kemarin';
+      return `${selisihHari} hari yang lalu`;
+    } catch (e) {
+      return dateString || '';
+    }
+  };
+
+  // 1. HITUNG DAN TAMPILKAN RANKING (Top 10)
+  const points = {};
+  dataTransaksi.forEach(t => {
+    if (t && t.siswaId) {
+      const nilaiPoin = parseInt(t.poin || 0);
+      points[t.siswaId] = (points[t.siswaId] || 0) + nilaiPoin;
+    }
+  });
+
+  const ranking = dataSiswa
+    .map(s => ({ ...s, total: points[s.id] || 0 }))
+    .filter(s => s.total > 0)
+    .sort((a, b) => b.total - a.total)
+    .slice(0, 10);
+
+  document.getElementById('dashboard-ranking').innerHTML = ranking.length 
+    ? ranking.map((s, i) => `
+        <div class="flex justify-between p-3 bg-white border border-slate-100 rounded-2xl shadow-sm">
+          <span>${i + 1}. ${s.name}</span>
+          <b class="text-red-600">${s.total} Poin</b>
+        </div>
+      `).join('') 
+    : '<p class="text-slate-400 text-sm">Belum ada pelanggaran</p>';
+
+
+  // 2. TAMPILKAN RIWAYAT TERBARU (Top 10)
+  const history = [...dataTransaksi].reverse().slice(0, 10);
+
+  document.getElementById('dashboard-history').innerHTML = history.length 
+    ? history.map(t => {
+        const s = dataSiswa.find(x => x.id === t.siswaId);
+        const waktuLalu = hitungWaktuLalu(t.date); 
+        
+        return `
+          <div class="p-3 bg-white border border-slate-100 rounded-2xl shadow-sm text-sm">
+            <div class="flex justify-between font-bold">
+              <span>${s?.name || 'Siswa'}</span>
+              <span class="text-red-600">${t.poin || 0} Poin</span>
+            </div>
+            <p class="text-slate-500 text-xs">${t.kategori || 'Pelanggaran'} • <span class="font-medium text-blue-600">${waktuLalu}</span></p>
+          </div>
+        `;
+      }).join('') 
+    : '<p class="text-slate-400 text-sm">Belum ada riwayat</p>';
+};
+
+// Jalankan fungsi
+window.renderDashboard();
+
         window.exportToCSV = (filename, data) => { const csvContent = "data:text/csv;charset=utf-8," + data.map(row => row.join(",")).join("\n"); const encodedUri = encodeURI(csvContent); const link = document.createElement("a"); link.setAttribute("href", encodedUri); link.setAttribute("download", filename); document.body.appendChild(link); link.click(); };
         window.exportMonthly = () => { const header = ["Nama Siswa", "Kelas", "Kategori", "Poin", "Tanggal"]; const rows = dataTransaksi.map(t => { const s = dataSiswa.find(x => x.id === t.siswaId); return [s ? s.name : "Unknown", s ? s.kelas : "-", t.kategori, t.poin, t.date]; }); window.exportToCSV("laporan_poin.csv", [header, ...rows]); };
         window.showAlert = (msg) => { document.getElementById('alert-msg').textContent = msg; document.getElementById('custom-alert').classList.remove('hidden'); };
         window.getWarningBadge = (poin) => { if (poin < 40) return '<span class="text-[10px] bg-emerald-100 text-emerald-700 px-2 py-0.5 rounded-full font-bold">Aman</span>'; if (poin < 70) return '<span class="text-[10px] bg-yellow-100 text-yellow-700 px-2 py-0.5 rounded-full font-bold">Pembinaan 1</span>'; if (poin < 100) return '<span class="text-[10px] bg-orange-100 text-orange-700 px-2 py-0.5 rounded-full font-bold">Pembinaan 2</span>'; return '<span class="text-[10px] bg-red-100 text-red-700 px-2 py-0.5 rounded-full font-bold">Panggilan Ortu</span>'; };
         window.filterInputSiswa = () => { const k = document.getElementById('input-kelas').value; document.getElementById('input-siswa').innerHTML = '<option value="">Pilih Siswa</option>' + dataSiswa.filter(s => !k || s.kelas === k).map(s => `<option value="${s.id}">${s.name}</option>`).join(''); };
         window.autoFillPoin = () => { const cat = dataKategori.find(x => x.id === document.getElementById('input-kategori').value); document.getElementById('input-jumlah').value = cat ? cat.poin : 0; };
-        window.saveTransaction = () => { const siswaId = document.getElementById('input-siswa').value; const catId = document.getElementById('input-kategori').value; const date = document.getElementById('input-tanggal').value; const cat = dataKategori.find(x => x.id === catId); if(!siswaId || !cat || !date) return window.showAlert('Lengkapi Data!'); push(ref(db, 'transaksi'), { siswaId, kategori: cat.nama, poin: cat.poin, date: date }); window.showAlert('Data poin tersimpan!'); };
+
+window.saveTransaction = () => {
+  const siswaId = document.getElementById('input-siswa').value;
+  const catId = document.getElementById('input-kategori').value;
+  const dateInput = document.getElementById('input-tanggal').value; // Contoh: "2026-07-08"
+  
+  const cat = dataKategori.find(x => x.id === catId);
+  if (!siswaId || !cat || !dateInput) return window.showAlert('Lengkapi Data!');
+
+  // AMBIL JAM, MENIT, DETIK SAAT INI (ZONA INDONESIA)
+  const sekarang = new Date();
+  const jam = String(sekarang.getHours()).padStart(2, '0');
+  const menit = String(sekarang.getMinutes()).padStart(2, '0');
+  const detik = String(sekarang.getSeconds()).padStart(2, '0');
+  
+  // MENGGANTI 'T' MENJADI SPASI 
+  // Ditambahkan '+07:00' di akhir agar dibaca akurat sebagai WIB oleh fungsi hitungWaktuLalu
+  const tanggalLengkapWIB = `${dateInput} ${jam}:${menit}:${detik}+07:00`;
+
+  // SIMPAN KE FIREBASE
+  push(ref(db, 'transaksi'), {
+    siswaId,
+    kategori: cat.nama,
+    poin: cat.poin,
+    date: tanggalLengkapWIB 
+  });
+
+  window.showAlert('Data poin tersimpan!');
+};
+
         window.showResetModal = (type) => { const btn = document.getElementById('btn-save-modal'); btn.classList.remove('hidden'); document.getElementById('modal-title').textContent = type === 'poin' ? 'Reset Poin' : 'Hapus Semua Data'; document.getElementById('modal-body').innerHTML = type === 'poin' ? '<p>Yakin reset semua poin siswa?</p>' : '<p class="text-red-600 font-bold">Yakin hapus SEMUA data?</p>'; btn.textContent = 'Ya, Lanjutkan'; btn.onclick = () => { if(type === 'poin') remove(ref(db, 'transaksi')); else { remove(ref(db, 'kelas')); remove(ref(db, 'siswa')); remove(ref(db, 'kategori')); remove(ref(db, 'transaksi')); } document.getElementById('modal').classList.add('hidden'); window.showAlert('Data telah dibersihkan!'); }; document.getElementById('modal').classList.remove('hidden'); };
         window.openModal = (type, id = '') => { modalType = type; editId = id; const btn = document.getElementById('btn-save-modal'); btn.classList.remove('hidden'); btn.textContent = 'Simpan'; btn.onclick = window.saveModal; document.getElementById('modal-title').textContent = (id ? 'Edit ' : 'Tambah ') + type.toUpperCase(); let html = ''; if(type === 'kelas') html = `<input id="m-nama" value="${dataKelas.find(x=>x.id==id)?.nama||''}" class="w-full p-3 border rounded-xl" placeholder="Nama Kelas">`; else if(type === 'siswa') html = `<input id="m-nama" value="${dataSiswa.find(x=>x.id==id)?.name||''}" class="w-full p-3 border rounded-xl" placeholder="Nama Siswa"><select id="m-kelas" class="w-full p-3 border rounded-xl">${dataKelas.map(k=>`<option value="${k.nama}">${k.nama}</option>`).join('')}</select>`; else if(type === 'kategori') html = `<input id="m-nama" value="${dataKategori.find(x=>x.id==id)?.nama||''}" class="w-full p-3 border rounded-xl" placeholder="Nama Kategori"><input type="number" id="m-poin" value="${dataKategori.find(x=>x.id==id)?.poin||0}" class="w-full p-3 border rounded-xl" placeholder="Poin">`; document.getElementById('modal-body').innerHTML = html; document.getElementById('modal').classList.remove('hidden'); };
         window.saveModal = () => { const updates = {}; if(modalType === 'kelas') updates.nama = document.getElementById('m-nama').value; else if(modalType === 'siswa') { updates.name = document.getElementById('m-nama').value; updates.kelas = document.getElementById('m-kelas').value; } else if(modalType === 'kategori') { updates.nama = document.getElementById('m-nama').value; updates.poin = parseInt(document.getElementById('m-poin').value); } if(editId) update(ref(db, modalType+'/'+editId), updates); else push(ref(db, modalType), updates); document.getElementById('modal').classList.add('hidden'); window.showAlert('Data berhasil disimpan!'); };
