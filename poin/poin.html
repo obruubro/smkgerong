@@ -16,20 +16,25 @@
 
     <!-- Login Screen -->
    <div id="login-screen" class="min-h-screen flex items-center justify-center p-4">
-    <div class="bg-transparent p-8 rounded-3xl shadow-2xl border border-white/20 w-full max-w-sm text-center">
+    <!-- Kartu dengan latar belakang transparan dan border halus -->
+    <div class="bg-transparent p-8 rounded-3xl w-full max-w-sm text-center">
         
+        <!-- Logo -->
         <div class="flex justify-center mb-4">
             <img src="logo.png" alt="Logo" class="size-16 object-contain">
         </div>
         
-        <h1 class="font-black text-indigo-900">KARMA</h1>
-        <p class="text-[10px] text-slate-400 font-bold uppercase">SMKN KASOMALANG</p>
+        <!-- Tulisan dengan warna Indigo Gelap (bukan putih) -->
+        <h2 class="text-4xl font-black mb-2 text-indigo-950 tracking-tighter">KARMA</h2>
+        <p class="text-slate-600 mb-8 font-bold tracking-wide uppercase">SMKN KASOMALANG</p>
         
+        <!-- Input dengan gaya yang tegas -->
         <input type="password" id="admin-password" placeholder="Password Admin" 
-               class="w-full p-4 mb-4 border border-white/20 rounded-2xl bg-white/10 focus:border-indigo-300 outline-none text-center font-bold text-white placeholder-white/50">
+               class="w-full p-4 mb-4 border-2 border-indigo-200 rounded-2xl bg-white/50 focus:border-indigo-600 outline-none text-center font-bold text-indigo-900 placeholder-indigo-300">
         
+        <!-- Tombol Login (warna tetap, tidak berubah saat hover) -->
         <button onclick="window.handleLogin()" 
-                class="w-full bg-indigo-700 text-white py-4 rounded-2xl font-bold shadow-lg shadow-indigo-900/20">
+                class="w-full bg-indigo-700 text-white py-4 rounded-2xl font-bold shadow-xl">
             Login Sistem
         </button>
     </div>
