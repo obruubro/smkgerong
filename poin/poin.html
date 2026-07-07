@@ -28,16 +28,15 @@
     <div id="main-content" class="hidden pb-32">
         <header class="bg-white border-b border-slate-100 sticky top-0 z-50 shadow-sm">
             <div class="max-w-md mx-auto flex justify-between items-center p-4">
-                <!-- Cool Logo Area -->
-                <button onclick="window.showTab('tab-dashboard')" class="flex items-center gap-2 group outline-none">
-                    <div class="bg-indigo-700 text-white font-black p-2 rounded-xl text-lg tracking-tighter group-hover:bg-indigo-800 transition-colors">
-                        <img src="logo.png" alt="Logo" class="size-8 object-contain">
-                    </div>
-                    <div class="text-left">
-                        <h1 class="font-black text-indigo-900 tracking-tight text-xl leading-none">KARMA</h1>
-                        <p class="text-[10px] text-slate-400 font-bold tracking-widest uppercase">SMKN KASOMALANG</p>
-                    </div>
-                </button>
+               <button onclick="window.showTab('tab-dashboard')" class="flex items-center gap-2 group outline-none">
+    <div class="bg-indigo-700 text-white font-black p-2 rounded-xl text-lg tracking-tighter group-hover:bg-indigo-800 transition-colors">
+        <img src="logo.png" alt="Logo" class="size-8 object-contain">
+    </div>
+    <div class="text-left">
+        <h1 class="font-black text-indigo-900 tracking-tight text-xl leading-none">KARMA</h1>
+        <p class="text-[10px] text-slate-400 font-bold tracking-widest uppercase">SMKN KASOMALANG</p>
+    </div>
+</button>
                 
                 <button id="menu-btn" class="p-2 bg-slate-100 rounded-lg hover:bg-slate-200 transition">
                     <svg class="w-6 h-6 text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
@@ -179,10 +178,135 @@
         document.getElementById('input-tanggal').valueAsDate = new Date();
 
         let dataSiswa = [], dataKategori = [], dataKelas = [], dataTransaksi = [], modalType = '', editId = '';
+       
+        window.deleteData = function(path){
+
+    document.getElementById("modal-title").textContent = "Konfirmasi Hapus";
+
+    document.getElementById("modal-body").innerHTML = `
+        <div class="text-center">
+
+            <div class="w-16 h-16 mx-auto rounded-full bg-red-100 flex items-center justify-center">
+                🗑️
+            </div>
+
+            <h3 class="mt-4 text-xl font-bold">
+                Hapus Data?
+            </h3>
+
+            <p class="text-slate-500 mt-2">
+                Data yang dihapus tidak dapat dikembalikan.
+            </p>
+
+        </div>
+    `;
+
+        const btn = document.getElementById("btn-save-modal");
+
+        btn.textContent = "Ya, Hapus";
+
+        btn.className =
+            "px-6 py-3 rounded-xl bg-red-600 hover:bg-red-700 text-white font-bold";
+
+        btn.onclick = async ()=>{
+
+            await remove(ref(db,path));
+
+            document.getElementById("modal").classList.add("hidden");
+
+            // Kembalikan tombol ke kondisi normal
+            btn.textContent = "Simpan";
+            btn.className =
+                "px-6 py-3 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold";
+
+            window.showAlert("Data berhasil dihapus");
+
+        };
+
+    document.getElementById("modal").classList.remove("hidden");
+
+}
 
         window.downloadTemplate = () => { const csvContent = "Nama,Kelas\nContoh Siswa,X RPL 1\nBudi Santoso,XI RPL 1"; const blob = new Blob([csvContent], { type: 'text/csv' }); const url = URL.createObjectURL(blob); const a = document.createElement('a'); a.href = url; a.download = 'template_siswa.csv'; a.click(); };
         window.processImport = (input) => { const file = input.files[0]; if (!file) return; const reader = new FileReader(); reader.onload = (e) => { const text = e.target.result; const lines = text.split('\n').slice(1); lines.forEach(line => { const [name, kelas] = line.split(','); if (name && kelas) { push(ref(db, 'siswa'), { name: name.trim(), kelas: kelas.trim() }); } }); window.showAlert('Import data berhasil!'); input.value = ''; }; reader.readAsText(file); };
-        window.printSurat = (siswaId, name) => { const s = dataSiswa.find(x => x.id === siswaId); const trans = dataTransaksi.filter(t => t.siswaId === siswaId); const total = trans.reduce((sum, t) => sum + (parseInt(t.poin) || 0), 0); const printWindow = window.open('', '_blank'); const dateStr = new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' }); let html = `<html><head><style>body{font-family:serif; padding:40px;} .header{text-align:center; border-bottom:3px double #000; padding-bottom:10px; margin-bottom:20px;} table{width:100%; border-collapse:collapse; margin:20px 0;} th, td{border:1px solid #000; padding:8px;} .signature{text-align:right; margin-top:50px;}</style></head><body>`; html += `<div class="header"><h2>SMKN KASOMALANG</h2><p>Laporan Kedisiplinan Siswa</p></div>`; html += `<h3>SURAT PEMANGGILAN ORANG TUA</h3><p>Kepada Yth. Bapak/Ibu Orang Tua/Wali dari <b>${name}</b> (${s?.kelas || '-'}).</p>`; html += `<p>Sehubungan dengan akumulasi poin pelanggaran sebesar <b>${total}</b>, kami mengundang Bapak/Ibu untuk hadir ke sekolah untuk konsultasi.</p>`; html += `<table><thead><tr><th>Tanggal</th><th>Kategori</th><th>Poin</th></tr></thead><tbody>`; html += trans.map(t => `<tr><td>${t.date}</td><td>${t.kategori}</td><td>${t.poin}</td></tr>`).join(''); html += `</tbody></table><div class="signature"><p>Kasomalang, ${dateStr}</p><br><br><p>(..........................)</p></div></body></html>`; printWindow.document.write(html); printWindow.document.close(); setTimeout(() => { printWindow.print(); }, 500); };
+        
+        window.printSurat = (siswaId, name, tglPemanggilan, noSurat) => {
+    const s = dataSiswa.find(x => x.id === siswaId);
+    const trans = dataTransaksi.filter(t => t.siswaId === siswaId);
+    const total = trans.reduce((sum, t) => sum + (parseInt(t.poin) || 0), 0);
+    const printWindow = window.open('', '_blank');
+    const dateStr = new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
+
+    let html = `
+    <html>
+    <head>
+        <style>
+            body { font-family: 'Arial', sans-serif; padding: 20px; line-height: 1.5; color: #333; }
+            .kop { text-align: center; border-bottom: 3px double #000; padding-bottom: 10px; margin-bottom: 20px; }
+            .kop div { line-height: 1.2; font-weight: bold; text-transform: uppercase; }
+            .kop p { margin: 2px 0; font-size: 0.9em; text-transform: none; }
+            .content { margin: 20px 0; }
+            table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+            th, td { border: 1px solid #000; padding: 8px; text-align: left; }
+            th { background-color: #f2f2f2; }
+            .signature { text-align: right; margin-top: 40px; float: right; width: 300px; }
+            .page-break { page-break-before: always; }
+        </style>
+    </head>
+    <body>
+        <div class="kop">
+            <div>PEMERINTAH DAERAH PROVINSI JAWA BARAT</div>
+            <div>DINAS PENDIDIKAN</div>
+            <div>CABANG DINAS PENDIDIKAN WILAYAH IV</div>
+            <div style="font-size: 1.2em;">SEKOLAH MENENGAH KEJURUAN NEGERI KASOMALANG</div>
+            <p>Jln. Sukajaya Kasomalang Kulon Telp. (0260) 4741181 Kasomalang - Subang 41281</p>
+            <p>E-Mail: smknekas@gmail.com | Website: http://smknkasomalang.sch.id</p>
+        </div>
+
+        <div class="content">
+            <p><strong>Nomor:</strong> ${noSurat || '..........................'}</p>
+            <p><strong>Perihal:</strong> Undangan Komunikasi Perkembangan Siswa</p>
+            <br>
+            <p>Yth. Bapak/Ibu Orang Tua/Wali dari <strong>${name}</strong> (${s?.kelas || '-'}),</p>
+            
+            <p>Dengan hormat, kami mengharapkan kehadiran Bapak/Ibu di sekolah untuk mendiskusikan perkembangan putra-putri Bapak/Ibu terkait kedisiplinan, pada:</p>
+            
+            <p style="margin-left: 20px;">
+                <strong>Hari/Tanggal:</strong> ${tglPemanggilan || '..........................'}<br>
+                <strong>Waktu:</strong> 08.00 s.d. 14.00 WIB<br>
+                <strong>Tempat:</strong> Ruang Guru/BK SMKN Kasomalang
+            </p>
+            
+            <p>Pertemuan ini sangat penting guna mencari solusi terbaik demi masa depan dan kesuksesan ${name}. Kehadiran Bapak/Ibu akan sangat membantu kami dalam menyelaraskan pembinaan di sekolah dan di rumah.</p>
+            
+            <p>Demikian undangan ini kami sampaikan. Atas perhatian dan kerja sama yang baik, kami ucapkan terima kasih.</p>
+        </div>
+
+        <div class="signature">
+            <p>Kasomalang, ${dateStr}</p>
+            <p>Guru Bimbingan Konseling,</p>
+            <br><br><br>
+            <p>(..........................................)</p>
+        </div>
+
+        <div class="page-break">
+            <h4>LAMPIRAN: Riwayat Poin Pelanggaran</h4>
+            <p>Berikut adalah catatan detail akumulasi poin sebesar <strong>${total} poin</strong>:</p>
+            <table>
+                <thead><tr><th>Tanggal</th><th>Kategori</th><th>Poin</th></tr></thead>
+                <tbody>
+                    ${trans.map(t => `<tr><td>${t.date}</td><td>${t.kategori}</td><td>${t.poin}</td></tr>`).join('')}
+                </tbody>
+            </table>
+        </div>
+    </body>
+    </html>`;
+
+    printWindow.document.write(html);
+    printWindow.document.close();
+    setTimeout(() => { printWindow.print(); }, 500);
+};
+
         window.renderDashboard = () => { const points = {}; dataTransaksi.forEach(t => { points[t.siswaId] = (points[t.siswaId] || 0) + parseInt(t.poin || 0); }); const ranking = dataSiswa.map(s => ({...s, total: points[s.id] || 0})).filter(s => s.total > 0).sort((a,b) => b.total - a.total).slice(0, 5); document.getElementById('dashboard-ranking').innerHTML = ranking.length ? ranking.map((s,i) => `<div class="flex justify-between p-3 bg-white border border-slate-100 rounded-2xl shadow-sm"><span>${i+1}. ${s.name}</span><b class="text-red-600">${s.total} Poin</b></div>`).join('') : '<p class="text-slate-400 text-sm">Belum ada pelanggaran</p>'; const history = [...dataTransaksi].sort((a,b) => b.date.localeCompare(a.date)).slice(0, 5); document.getElementById('dashboard-history').innerHTML = history.length ? history.map(t => { const s = dataSiswa.find(x => x.id === t.siswaId); return `<div class="p-3 bg-white border border-slate-100 rounded-2xl shadow-sm text-sm"><div class="flex justify-between font-bold"><span>${s?.name || 'Siswa'}</span><span class="text-red-600">${t.poin} Poin</span></div><p class="text-slate-500 text-xs">${t.kategori} • ${t.date}</p></div>`; }).join('') : '<p class="text-slate-400 text-sm">Belum ada riwayat</p>'; };
         window.exportToCSV = (filename, data) => { const csvContent = "data:text/csv;charset=utf-8," + data.map(row => row.join(",")).join("\n"); const encodedUri = encodeURI(csvContent); const link = document.createElement("a"); link.setAttribute("href", encodedUri); link.setAttribute("download", filename); document.body.appendChild(link); link.click(); };
         window.exportMonthly = () => { const header = ["Nama Siswa", "Kelas", "Kategori", "Poin", "Tanggal"]; const rows = dataTransaksi.map(t => { const s = dataSiswa.find(x => x.id === t.siswaId); return [s ? s.name : "Unknown", s ? s.kelas : "-", t.kategori, t.poin, t.date]; }); window.exportToCSV("laporan_poin.csv", [header, ...rows]); };
@@ -195,9 +319,21 @@
         window.openModal = (type, id = '') => { modalType = type; editId = id; const btn = document.getElementById('btn-save-modal'); btn.classList.remove('hidden'); btn.textContent = 'Simpan'; btn.onclick = window.saveModal; document.getElementById('modal-title').textContent = (id ? 'Edit ' : 'Tambah ') + type.toUpperCase(); let html = ''; if(type === 'kelas') html = `<input id="m-nama" value="${dataKelas.find(x=>x.id==id)?.nama||''}" class="w-full p-3 border rounded-xl" placeholder="Nama Kelas">`; else if(type === 'siswa') html = `<input id="m-nama" value="${dataSiswa.find(x=>x.id==id)?.name||''}" class="w-full p-3 border rounded-xl" placeholder="Nama Siswa"><select id="m-kelas" class="w-full p-3 border rounded-xl">${dataKelas.map(k=>`<option value="${k.nama}">${k.nama}</option>`).join('')}</select>`; else if(type === 'kategori') html = `<input id="m-nama" value="${dataKategori.find(x=>x.id==id)?.nama||''}" class="w-full p-3 border rounded-xl" placeholder="Nama Kategori"><input type="number" id="m-poin" value="${dataKategori.find(x=>x.id==id)?.poin||0}" class="w-full p-3 border rounded-xl" placeholder="Poin">`; document.getElementById('modal-body').innerHTML = html; document.getElementById('modal').classList.remove('hidden'); };
         window.saveModal = () => { const updates = {}; if(modalType === 'kelas') updates.nama = document.getElementById('m-nama').value; else if(modalType === 'siswa') { updates.name = document.getElementById('m-nama').value; updates.kelas = document.getElementById('m-kelas').value; } else if(modalType === 'kategori') { updates.nama = document.getElementById('m-nama').value; updates.poin = parseInt(document.getElementById('m-poin').value); } if(editId) update(ref(db, modalType+'/'+editId), updates); else push(ref(db, modalType), updates); document.getElementById('modal').classList.add('hidden'); window.showAlert('Data berhasil disimpan!'); };
         window.showHistory = (id, name) => { const trans = dataTransaksi.filter(t => t.siswaId === id); const total = trans.reduce((s, t) => s + (parseInt(t.poin) || 0), 0); document.getElementById('modal-title').textContent = 'Riwayat: ' + name; document.getElementById('btn-save-modal').classList.add('hidden'); document.getElementById('modal-body').innerHTML = `<div class="text-center">${window.getWarningBadge(total)} <b class="block text-3xl mt-1">${total} Poin</b></div><div class="space-y-2 max-h-60 overflow-y-auto mt-4">${trans.map(t => `<div class="flex justify-between border-b pb-1 text-xs"><div><p class="font-bold">${t.kategori}</p><p class="text-slate-500">${t.date}</p></div><span class="font-bold text-lg">${t.poin}</span></div>`).join('') || '<p class="text-slate-500">Belum ada riwayat</p>'}</div><button onclick="window.printSurat('${id}', '${name}')" class="w-full mt-4 bg-indigo-700 text-white py-3 rounded-xl font-bold">Cetak Surat Panggilan</button>`; document.getElementById('modal').classList.remove('hidden'); };
-        window.renderMasterSiswa = () => { const k = document.getElementById('filter-siswa-master').value; document.getElementById('list-siswa-master').innerHTML = dataSiswa.filter(s => !k || s.kelas === k).map(s => `<div class="flex justify-between items-center p-3 bg-slate-50 border rounded-2xl"><span>${s.name} (${s.kelas})</span><div><button onclick="window.openModal('siswa', '${s.id}')" class="text-indigo-600 mr-3 font-bold">Edit</button><button onclick="remove(ref(db, 'siswa/${s.id}'))" class="text-red-600 font-bold">Hapus</button></div></div>`).join(''); };
+        window.renderMasterSiswa = () => { const k = document.getElementById('filter-siswa-master').value; document.getElementById('list-siswa-master').innerHTML = dataSiswa.filter(s => !k || s.kelas === k).map(s => `<div class="flex justify-between items-center p-3 bg-slate-50 border rounded-2xl"><span>${s.name} (${s.kelas})</span><div><button onclick="window.openModal('siswa', '${s.id}')" class="text-indigo-600 mr-3 font-bold">Edit</button><button onclick="window.deleteData('siswa/${s.id}')"
+class="text-red-600 font-bold">
+Hapus
+</button></div></div>`).join(''); };
         window.renderDataSiswa = () => { const k = document.getElementById('filter-siswa-kelas').value; document.getElementById('list-data-siswa').innerHTML = dataSiswa.filter(s => !k || s.kelas === k).map(s => { const total = dataTransaksi.filter(t => t.siswaId === s.id).reduce((sum, t) => sum + (parseInt(t.poin) || 0), 0); return `<div class="p-4 bg-white border border-slate-100 rounded-3xl flex justify-between items-center cursor-pointer shadow-sm" onclick="window.showHistory('${s.id}', '${s.name}')"><div><b class="text-slate-800">${s.name}</b><p class="text-xs text-slate-500">${s.kelas}</p></div><div class="text-right"><div class="font-black text-indigo-700">${total} Poin</div>${window.getWarningBadge(total)}</div></div>`; }).join(''); };
-        window.renderMaster = () => { document.getElementById('list-kelas').innerHTML = dataKelas.map(k => `<div class="flex justify-between items-center p-3 bg-slate-50 border rounded-2xl"><span>${k.nama}</span><div><button onclick="window.openModal('kelas', '${k.id}')" class="text-indigo-600 mr-3 font-bold">Edit</button><button onclick="remove(ref(db, 'kelas/${k.id}'))" class="text-red-600 font-bold">Hapus</button></div></div>`).join(''); document.getElementById('list-kategori').innerHTML = dataKategori.map(k => `<div class="flex justify-between items-center p-3 bg-slate-50 border rounded-2xl"><span>${k.nama} (${k.poin})</span><div><button onclick="window.openModal('kategori', '${k.id}')" class="text-indigo-600 mr-3 font-bold">Edit</button><button onclick="remove(ref(db, 'kategori/${k.id}'))" class="text-red-600 font-bold">Hapus</button></div></div>`).join(''); const selects = [document.getElementById('filter-siswa-kelas'), document.getElementById('filter-siswa-master'), document.getElementById('input-kelas')]; selects.forEach(sel => { if(sel) sel.innerHTML = '<option value="">Semua Kelas</option>' + dataKelas.map(k => `<option value="${k.nama}">${k.nama}</option>`).join(''); }); document.getElementById('input-kategori').innerHTML = '<option value="">Pilih Kategori</option>' + dataKategori.map(k => `<option value="${k.id}">${k.nama}</option>`).join(''); window.renderMasterSiswa(); window.renderDataSiswa(); };
+        window.renderMaster = () => { document.getElementById('list-kelas').innerHTML = dataKelas.map(k => `<div class="flex justify-between items-center p-3 bg-slate-50 border rounded-2xl"><span>${k.nama}</span><div><button onclick="window.openModal('kelas', '${k.id}')" class="text-indigo-600 mr-3 font-bold">Edit</button><button
+onclick="window.deleteData('kelas/${k.id}')"
+class="text-red-600 font-bold">
+Hapus
+</button>
+</div></div>`).join(''); document.getElementById('list-kategori').innerHTML = dataKategori.map(k => `<div class="flex justify-between items-center p-3 bg-slate-50 border rounded-2xl"><span>${k.nama} (${k.poin})</span><div><button onclick="window.openModal('kategori', '${k.id}')" class="text-indigo-600 mr-3 font-bold">Edit</button><button
+onclick="window.deleteData('kategori/${k.id}')"
+class="text-red-600 font-bold">
+Hapus
+</button></div></div>`).join(''); const selects = [document.getElementById('filter-siswa-kelas'), document.getElementById('filter-siswa-master'), document.getElementById('input-kelas')]; selects.forEach(sel => { if(sel) sel.innerHTML = '<option value="">Semua Kelas</option>' + dataKelas.map(k => `<option value="${k.nama}">${k.nama}</option>`).join(''); }); document.getElementById('input-kategori').innerHTML = '<option value="">Pilih Kategori</option>' + dataKategori.map(k => `<option value="${k.id}">${k.nama}</option>`).join(''); window.renderMasterSiswa(); window.renderDataSiswa(); };
         
         onValue(ref(db, 'kelas'), s => { dataKelas = Object.entries(s.val()||{}).map(([id,v])=>({id,...v})); window.renderMaster(); });
         onValue(ref(db, 'siswa'), s => { dataSiswa = Object.entries(s.val()||{}).map(([id,v])=>({id,...v})); window.renderMaster(); });
