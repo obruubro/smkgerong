@@ -1,112 +1,201 @@
-
 <!DOCTYPE html>
 <html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Form Penilaian &amp; Administrasi Sertifikat PKL RPL</title>
+    <title>Penilaian PKL - SMKN Kasomalang</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --primary-color: #1e3a8a; 
+            --secondary-color: #f59e0b; 
+            --bg-color: #f1f5f9;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --border-color: #e2e8f0;
+            --white: #ffffff;
+        }
+
         body { 
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            font-family: 'Poppins', sans-serif; 
             line-height: 1.6; 
             margin: 0; 
-            padding: 20px; 
-            background-color: #f4f6f9; 
-            color: #333; 
+            padding: 40px 20px; 
+            background: linear-gradient(135deg, #e0e7ff 0%, #f8fafc 100%);
+            color: var(--text-main);
+            min-height: 100vh;
         }
+
         .container { 
-            max-width: 700px; 
-            margin: 20px auto; 
-            background: #ffffff; 
-            padding: 40px; 
-            border-radius: 12px; 
-            box-shadow: 0 4px 6px rgba(0,0,0,0.05), 0 1px 3px rgba(0,0,0,0.1); 
+            max-width: 750px; 
+            margin: 0 auto; 
+            background: var(--white); 
+            padding: 0; 
+            border-radius: 16px; 
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+            overflow: hidden;
         }
-        h2 { 
-            text-align: center; 
-            color: #2c3e50; 
-            margin-bottom: 5px;
-        }
-        .subtitle {
+
+        .header {
+            background-color: var(--primary-color);
+            color: var(--white);
+            padding: 30px 20px;
             text-align: center;
-            color: #7f8c8d;
-            margin-bottom: 30px;
+            border-bottom: 5px solid var(--secondary-color);
+        }
+
+        .header h1 {
+            margin: 0;
+            font-size: 24px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .header p {
+            margin: 5px 0 0;
             font-size: 14px;
+            font-weight: 300;
+            opacity: 0.9;
         }
+
+        .header .sub-brand {
+            display: inline-block;
+            background: var(--secondary-color);
+            color: var(--primary-color);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-top: 15px;
+        }
+
+        form {
+            padding: 30px 40px;
+        }
+
         fieldset { 
-            border: 1px solid #e2e8f0; 
+            border: 1px solid var(--border-color); 
             padding: 25px; 
-            border-radius: 8px; 
+            border-radius: 12px; 
             margin-bottom: 25px; 
-            background-color: #ffffff;
+            background-color: #fafafa;
+            transition: border-color 0.3s ease;
         }
+
+        fieldset:hover {
+            border-color: #cbd5e1;
+        }
+
         legend { 
-            font-weight: bold; 
-            padding: 0 15px; 
-            color: #3498db; 
-            font-size: 16px;
+            font-weight: 600; 
+            padding: 4px 15px; 
+            background: var(--primary-color);
+            color: var(--white);
+            border-radius: 20px;
+            font-size: 14px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
+
         .form-group { 
             margin-bottom: 20px; 
         }
+
+        .form-group:last-child {
+            margin-bottom: 0;
+        }
+
         label { 
             display: block; 
-            font-weight: 600; 
+            font-weight: 500; 
             margin-bottom: 8px; 
-            color: #4a5568;
+            color: var(--text-main);
+            font-size: 14px;
         }
-        input[type="text"], input[type="number"], select { 
+
+        input[type="text"], 
+        input[type="number"], 
+        select { 
             width: 100%; 
-            padding: 10px 14px; 
+            padding: 12px 16px; 
             border: 1px solid #cbd5e1; 
-            border-radius: 6px; 
+            border-radius: 8px; 
             box-sizing: border-box; 
-            font-size: 15px;
-            transition: border-color 0.2s;
+            font-size: 14px;
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--white);
+            transition: all 0.3s ease;
         }
-        input:focus, select:focus {
+
+        input:focus, 
+        select:focus {
             outline: none;
-            border-color: #3498db;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(30, 58, 138, 0.1);
         }
-        input[type="number"] { 
-            -moz-appearance: textfield; 
-        }
+
+        input[type="number"] { -moz-appearance: textfield; }
         input[type="number"]::-webkit-outer-spin-button,
         input[type="number"]::-webkit-inner-spin-button {
             -webkit-appearance: none;
             margin: 0;
         }
+
         .note { 
             font-size: 12px; 
-            color: #64748b; 
-            margin-top: 5px; 
-            font-style: italic;
+            color: var(--text-muted); 
+            margin-top: 6px; 
+            display: flex;
+            align-items: center;
         }
+
+        .note::before {
+            content: "ℹ️";
+            margin-right: 5px;
+            font-size: 10px;
+        }
+
         button { 
             width: 100%; 
-            background-color: #3498db; 
+            background: linear-gradient(135deg, var(--primary-color) 0%, #2563eb 100%);
             color: white; 
-            padding: 14px; 
+            padding: 16px; 
             border: none; 
-            border-radius: 6px; 
+            border-radius: 8px; 
             font-size: 16px; 
             cursor: pointer; 
-            font-weight: bold; 
-            box-shadow: 0 4px 6px rgba(52, 152, 219, 0.2);
-            transition: background-color 0.2s;
+            font-weight: 600; 
+            letter-spacing: 0.5px;
+            box-shadow: 0 4px 10px rgba(37, 99, 235, 0.3);
+            transition: all 0.3s ease;
+            margin-top: 10px;
         }
+
         button:hover { 
-            background-color: #2980b9; 
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(37, 99, 235, 0.4);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        @media (max-width: 600px) {
+            form { padding: 20px; }
+            fieldset { padding: 15px; }
+            body { padding: 20px 10px; }
         }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <h2>Form Penilaian &amp; Sertifikat PKL</h2>
-    <div class="subtitle">Kompetensi Keahlian: Rekayasa Perangkat Lunak (RPL) - Industri Non-Linier</div>
+    <div class="header">
+        <h1>SMKN Kasomalang</h1>
+        <p>Form Penilaian & Administrasi Sertifikat PKL</p>
+        <div class="sub-brand">Kompetensi Keahlian: Rekayasa Perangkat Lunak (RPL)</div>
+    </div>
     
-    <!-- URL Utama Google Form yang mengarah ke formResponse -->
     <form action="https://docs.google.com/forms/d/e/1FAIpQLSfOXOKxqnrVvOm4bIlNOyhJ-w0NpRutagYPM1K7A8pePClMzw/formResponse" method="POST">
         
         <!-- BAGIAN 1: IDENTITAS SISWA -->
@@ -132,50 +221,56 @@
             <div class="form-group">
                 <label>Nama Pimpinan / Kepala Industri</label>
                 <input type="text" name="entry.133407204" placeholder="Contoh: Budi Santoso, S.Kom." required>
-                <p class="note">*Nama pimpinan yang akan menandatangani sertifikat.</p>
+                <p class="note">Nama pimpinan yang akan menandatangani sertifikat.</p>
             </div>
+            
+            <!-- ======= TAMBAHAN ENTRY BARU DARI LINK (entry.651650581) ======= -->
+            <div class="form-group">
+                <label>NIP / NIK Pimpinan (Atau Data Tambahan)</label>
+                <input type="text" name="entry.651650581" placeholder="Isi data tambahan pimpinan jika diperlukan" required>
+                <p class="note">Silakan sesuaikan teks label ini dengan field aslinya di Google Form Anda.</p>
+            </div>
+            <!-- ================================================================ -->
+
             <div class="form-group">
                 <label>Jabatan Pimpinan</label>
                 <input type="text" name="entry.128812360" placeholder="Contoh: Kepala Dinas / HRD Manager" required>
             </div>
         </fieldset>
 
-        <!-- BAGIAN 3: ASPEK PENILAIAN (URUTAN FIX SESUAI GOOGLE FORM) -->
+        <!-- BAGIAN 3: ASPEK PENILAIAN -->
         <fieldset>
-            <legend>Aspek Penilaian Angka (Skala 1 - 100)</legend>
+            <legend>Aspek Penilaian Angka (1 - 100)</legend>
             <div class="form-group">
                 <label>1. Kedisiplinan &amp; Kehadiran</label>
-                <!-- Menjawab entry pertama pada pengisian nilai di link Anda -->
                 <input type="number" name="entry.1288805382" min="1" max="100" placeholder="0-100" required>
             </div>
             <div class="form-group">
                 <label>2. Kerja Sama &amp; Kerja Tim (Teamwork)</label>
-                <!-- Menjawab entry kedua pada pengisian nilai di link Anda -->
                 <input type="number" name="entry.642810629" min="1" max="100" placeholder="0-100" required>
             </div>
             <div class="form-group">
                 <label>3. Kompetensi Teknis (Skill Tugas di Lapangan)</label>
-                <!-- Menjawab entry ketiga pada pengisian nilai di link Anda -->
                 <input type="number" name="entry.599107293" min="1" max="100" placeholder="0-100" required>
             </div>
         </fieldset>
 
         <!-- BAGIAN 4: TUJUAN PEMBELAJARAN (TP) NON-LINIER -->
         <fieldset>
-            <legend>Fokus Kompetensi (Penyesuaian Industri Non-Linier)</legend>
+            <legend>Fokus Kompetensi Non-Linier</legend>
             <div class="form-group">
                 <label>Tujuan Pembelajaran Utama yang Dicapai</label>
                 <select name="entry.458517587" required>
-                    <option value="">-- Pilih Kompetensi Penyesuaian RPL --</option>
-                    <option value="mengelola, merapikan, dan mengamankan struktur basis data operasional">1. mengelola, merapikan, dan mengamankan struktur basis data operasional</option>
-                    <option value="melakukan analisis proses bisnis dan troubleshooting sistem digital instansi">2. melakukan analisis proses bisnis dan troubleshooting sistem digital instansi</option>
-                    <option value="mengembangkan Solusi IT skala kecil untuk membantu efisiensi kerja instansi">3. mengembangkan Solusi IT skala kecil untuk membantu efisiensi kerja instansi</option>
-                    <option value="melakukan otomasi administrasi perkantoran dan pengolahan data digital">4. melakukan otomasi administrasi perkantoran dan pengolahan data digital</option>
+                    <option value="" disabled selected>-- Pilih Kompetensi Penyesuaian RPL --</option>
+                    <option value="mengelola, merapikan, dan mengamankan struktur basis data operasional">1. Mengelola, merapikan, dan mengamankan struktur basis data operasional</option>
+                    <option value="melakukan analisis proses bisnis dan troubleshooting sistem digital instansi">2. Melakukan analisis proses bisnis dan troubleshooting sistem digital instansi</option>
+                    <option value="mengembangkan Solusi IT skala kecil untuk membantu efisiensi kerja instansi">3. Mengembangkan Solusi IT skala kecil untuk membantu efisiensi kerja instansi</option>
+                    <option value="melakukan otomasi administrasi perkantoran dan pengolahan data digital">4. Melakukan otomasi administrasi perkantoran dan pengolahan data digital</option>
                 </select>
             </div>
         </fieldset>
 
-        <button type="submit">Kirim Penilaian &amp; Proses Sertifikat Otomatis</button>
+        <button type="submit">Kirim Penilaian &amp; Cetak Sertifikat</button>
     </form>
 </div>
 
