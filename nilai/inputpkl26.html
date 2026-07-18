@@ -1,1 +1,183 @@
 
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Form Penilaian &amp; Administrasi Sertifikat PKL RPL</title>
+    <style>
+        body { 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            line-height: 1.6; 
+            margin: 0; 
+            padding: 20px; 
+            background-color: #f4f6f9; 
+            color: #333; 
+        }
+        .container { 
+            max-width: 700px; 
+            margin: 20px auto; 
+            background: #ffffff; 
+            padding: 40px; 
+            border-radius: 12px; 
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05), 0 1px 3px rgba(0,0,0,0.1); 
+        }
+        h2 { 
+            text-align: center; 
+            color: #2c3e50; 
+            margin-bottom: 5px;
+        }
+        .subtitle {
+            text-align: center;
+            color: #7f8c8d;
+            margin-bottom: 30px;
+            font-size: 14px;
+        }
+        fieldset { 
+            border: 1px solid #e2e8f0; 
+            padding: 25px; 
+            border-radius: 8px; 
+            margin-bottom: 25px; 
+            background-color: #ffffff;
+        }
+        legend { 
+            font-weight: bold; 
+            padding: 0 15px; 
+            color: #3498db; 
+            font-size: 16px;
+        }
+        .form-group { 
+            margin-bottom: 20px; 
+        }
+        label { 
+            display: block; 
+            font-weight: 600; 
+            margin-bottom: 8px; 
+            color: #4a5568;
+        }
+        input[type="text"], input[type="number"], select { 
+            width: 100%; 
+            padding: 10px 14px; 
+            border: 1px solid #cbd5e1; 
+            border-radius: 6px; 
+            box-sizing: border-box; 
+            font-size: 15px;
+            transition: border-color 0.2s;
+        }
+        input:focus, select:focus {
+            outline: none;
+            border-color: #3498db;
+        }
+        input[type="number"] { 
+            -moz-appearance: textfield; 
+        }
+        input[type="number"]::-webkit-outer-spin-button,
+        input[type="number"]::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+        .note { 
+            font-size: 12px; 
+            color: #64748b; 
+            margin-top: 5px; 
+            font-style: italic;
+        }
+        button { 
+            width: 100%; 
+            background-color: #3498db; 
+            color: white; 
+            padding: 14px; 
+            border: none; 
+            border-radius: 6px; 
+            font-size: 16px; 
+            cursor: pointer; 
+            font-weight: bold; 
+            box-shadow: 0 4px 6px rgba(52, 152, 219, 0.2);
+            transition: background-color 0.2s;
+        }
+        button:hover { 
+            background-color: #2980b9; 
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Form Penilaian &amp; Sertifikat PKL</h2>
+    <div class="subtitle">Kompetensi Keahlian: Rekayasa Perangkat Lunak (RPL) - Industri Non-Linier</div>
+    
+    <!-- URL Utama Google Form yang mengarah ke formResponse -->
+    <form action="https://docs.google.com/forms/d/e/1FAIpQLSfOXOKxqnrVvOm4bIlNOyhJ-w0NpRutagYPM1K7A8pePClMzw/formResponse" method="POST">
+        
+        <!-- BAGIAN 1: IDENTITAS SISWA -->
+        <fieldset>
+            <legend>Identitas Siswa</legend>
+            <div class="form-group">
+                <label>Nama Lengkap Siswa</label>
+                <input type="text" name="entry.102406112" placeholder="Contoh: Ahmad Hidayat" required>
+            </div>
+            <div class="form-group">
+                <label>NISN</label>
+                <input type="text" name="entry.793498529" placeholder="Contoh: 0054321098" required>
+            </div>
+        </fieldset>
+
+        <!-- BAGIAN 2: IDENTITAS MITRA INDUSTRI / INSTANSI -->
+        <fieldset>
+            <legend>Identitas Industri &amp; Pimpinan</legend>
+            <div class="form-group">
+                <label>Nama Perusahaan / Instansi</label>
+                <input type="text" name="entry.938231451" placeholder="Contoh: PT Dinas Digital Indonesia" required>
+            </div>
+            <div class="form-group">
+                <label>Nama Pimpinan / Kepala Industri</label>
+                <input type="text" name="entry.133407204" placeholder="Contoh: Budi Santoso, S.Kom." required>
+                <p class="note">*Nama pimpinan yang akan menandatangani sertifikat.</p>
+            </div>
+            <div class="form-group">
+                <label>Jabatan Pimpinan</label>
+                <input type="text" name="entry.128812360" placeholder="Contoh: Kepala Dinas / HRD Manager" required>
+            </div>
+        </fieldset>
+
+        <!-- BAGIAN 3: ASPEK PENILAIAN (URUTAN FIX SESUAI GOOGLE FORM) -->
+        <fieldset>
+            <legend>Aspek Penilaian Angka (Skala 1 - 100)</legend>
+            <div class="form-group">
+                <label>1. Kedisiplinan &amp; Kehadiran</label>
+                <!-- Menjawab entry pertama pada pengisian nilai di link Anda -->
+                <input type="number" name="entry.1288805382" min="1" max="100" placeholder="0-100" required>
+            </div>
+            <div class="form-group">
+                <label>2. Kerja Sama &amp; Kerja Tim (Teamwork)</label>
+                <!-- Menjawab entry kedua pada pengisian nilai di link Anda -->
+                <input type="number" name="entry.642810629" min="1" max="100" placeholder="0-100" required>
+            </div>
+            <div class="form-group">
+                <label>3. Kompetensi Teknis (Skill Tugas di Lapangan)</label>
+                <!-- Menjawab entry ketiga pada pengisian nilai di link Anda -->
+                <input type="number" name="entry.599107293" min="1" max="100" placeholder="0-100" required>
+            </div>
+        </fieldset>
+
+        <!-- BAGIAN 4: TUJUAN PEMBELAJARAN (TP) NON-LINIER -->
+        <fieldset>
+            <legend>Fokus Kompetensi (Penyesuaian Industri Non-Linier)</legend>
+            <div class="form-group">
+                <label>Tujuan Pembelajaran Utama yang Dicapai</label>
+                <select name="entry.458517587" required>
+                    <option value="">-- Pilih Kompetensi Penyesuaian RPL --</option>
+                    <option value="mengelola, merapikan, dan mengamankan struktur basis data operasional">1. mengelola, merapikan, dan mengamankan struktur basis data operasional</option>
+                    <option value="melakukan analisis proses bisnis dan troubleshooting sistem digital instansi">2. melakukan analisis proses bisnis dan troubleshooting sistem digital instansi</option>
+                    <option value="mengembangkan Solusi IT skala kecil untuk membantu efisiensi kerja instansi">3. mengembangkan Solusi IT skala kecil untuk membantu efisiensi kerja instansi</option>
+                    <option value="melakukan otomasi administrasi perkantoran dan pengolahan data digital">4. melakukan otomasi administrasi perkantoran dan pengolahan data digital</option>
+                </select>
+            </div>
+        </fieldset>
+
+        <button type="submit">Kirim Penilaian &amp; Proses Sertifikat Otomatis</button>
+    </form>
+</div>
+
+</body>
+</html>
