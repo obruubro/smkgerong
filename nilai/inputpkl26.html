@@ -1,276 +1,154 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Penilaian PKL - SMKN Kasomalang</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --primary-color: #1e3a8a; 
-            --secondary-color: #f59e0b; 
-            --bg-color: #f1f5f9;
-            --text-main: #1e293b;
-            --text-muted: #64748b;
-            --border-color: #e2e8f0;
-            --white: #ffffff;
-        }
-
-        body { 
-            font-family: 'Poppins', sans-serif; 
-            line-height: 1.6; 
-            margin: 0; 
-            padding: 40px 20px; 
-            background: linear-gradient(135deg, #e0e7ff 0%, #f8fafc 100%);
-            color: var(--text-main);
-            min-height: 100vh;
-        }
-
-        .container { 
-            max-width: 750px; 
-            margin: 0 auto; 
-            background: var(--white); 
-            padding: 0; 
-            border-radius: 16px; 
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
-            overflow: hidden;
-        }
-
-        .header {
-            background-color: var(--primary-color);
-            color: var(--white);
-            padding: 30px 20px;
-            text-align: center;
-            border-bottom: 5px solid var(--secondary-color);
-        }
-
-        .header h1 { margin: 0; font-size: 24px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; }
-        .header p { margin: 5px 0 0; font-size: 14px; font-weight: 300; opacity: 0.9; }
-        .header .sub-brand { display: inline-block; background: var(--secondary-color); color: var(--primary-color); padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 600; margin-top: 15px; }
-
-        form { padding: 30px 40px; }
-        fieldset { border: 1px solid var(--border-color); padding: 25px; border-radius: 12px; margin-bottom: 25px; background-color: #fafafa; transition: border-color 0.3s ease; }
-        fieldset:hover { border-color: #cbd5e1; }
-        legend { font-weight: 600; padding: 4px 15px; background: var(--primary-color); color: var(--white); border-radius: 20px; font-size: 14px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
-        .form-group { margin-bottom: 20px; }
-        .form-group:last-child { margin-bottom: 0; }
-        label { display: block; font-weight: 500; margin-bottom: 8px; color: var(--text-main); font-size: 14px; }
-        
-        input[type="text"], input[type="number"], select, textarea { 
-            width: 100%; padding: 12px 16px; border: 1px solid #cbd5e1; border-radius: 8px; box-sizing: border-box; font-size: 14px; font-family: 'Poppins', sans-serif; background-color: var(--white); transition: all 0.3s ease;
-        }
-        input:focus, select:focus, textarea:focus { outline: none; border-color: var(--primary-color); box-shadow: 0 0 0 3px rgba(30, 58, 138, 0.1); }
-        input[type="number"] { -moz-appearance: textfield; }
-        input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
-        
-        .checkbox-group label { font-weight: normal; display: flex; align-items: flex-start; margin-bottom: 10px; cursor: pointer; }
-        .checkbox-group input[type="checkbox"] { margin-right: 12px; margin-top: 4px; width: 18px; height: 18px; accent-color: var(--primary-color); }
-        
-        button, .btn-kembali, .btn-drive { 
-            display: block; width: 100%; color: white; padding: 16px; border: none; border-radius: 8px; font-size: 16px; cursor: pointer; font-weight: 600; letter-spacing: 0.5px; transition: all 0.3s ease; margin-top: 10px; text-align: center; text-decoration: none; box-sizing: border-box;
-        }
-        
-        button { background: linear-gradient(135deg, var(--primary-color) 0%, #2563eb 100%); box-shadow: 0 4px 10px rgba(37, 99, 235, 0.3); }
-        button:hover { transform: translateY(-2px); box-shadow: 0 6px 15px rgba(37, 99, 235, 0.4); }
-
-        /* CSS KHUSUS HALAMAN SUKSES */
-        #success-message { display: none; text-align: center; padding: 40px 30px; }
-        #success-message h2 { color: #10b981; margin-bottom: 10px; font-size: 26px; }
-        #success-message p { color: #64748b; margin-bottom: 20px; font-size: 15px; }
-
-        /* KOTAK TIMER */
-        #timer-box { background-color: #fffbeb; border: 2px solid #f59e0b; border-radius: 12px; padding: 30px 20px; margin-bottom: 30px; }
-        .loader { border: 4px solid #f3f4f6; border-top: 4px solid #f59e0b; border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite; margin: 0 auto 15px auto; }
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-        #waktu-timer { font-size: 32px; font-weight: 700; color: #b45309; display: block; margin-top: 10px; font-variant-numeric: tabular-nums; }
-
-        /* Kotak Download Sertifikat */
-        #certificate-box { display: none; background-color: #f0fdf4; border: 2px dashed #10b981; border-radius: 12px; padding: 25px 20px; margin-bottom: 30px; animation: fadeIn 0.5s ease-in-out; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
-        #certificate-box p { margin-bottom: 15px; color: #065f46; font-weight: 500; }
-        
-        .btn-drive { background: #10b981; box-shadow: 0 4px 10px rgba(16, 185, 129, 0.3); margin-bottom: 15px; }
-        .btn-drive:hover { background: #059669; transform: translateY(-2px); box-shadow: 0 6px 15px rgba(16, 185, 129, 0.4); }
-        .file-name-info { background: #e2e8f0; padding: 10px; border-radius: 6px; display: inline-block; width: 100%; box-sizing: border-box;}
-        .file-name-info strong { color: #0f172a; font-size: 16px; word-break: break-all; }
-        .btn-kembali { background: #64748b; }
-        .btn-kembali:hover { background: #475569; }
-
-        @media (max-width: 600px) { form { padding: 20px; } fieldset { padding: 15px; } body { padding: 20px 10px; } }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Penilaian PKL - SMKN Kasomalang</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--primary:#1e3a8a;--blue:#2563eb;--gold:#f59e0b;--green:#059669;--bg:#eef2ff;--text:#172033;--muted:#64748b;--line:#dbe3ef}
+*{box-sizing:border-box}body{margin:0;padding:28px 14px;background:linear-gradient(135deg,#e0e7ff,#f8fafc);font-family:Poppins,sans-serif;color:var(--text)}
+.container{max-width:850px;margin:auto;background:#fff;border-radius:18px;overflow:hidden;box-shadow:0 18px 45px rgba(15,23,42,.12)}
+.header{background:linear-gradient(135deg,var(--primary),var(--blue));color:#fff;text-align:center;padding:30px 20px;border-bottom:5px solid var(--gold)}
+.header h1{margin:0;font-size:25px}.header p{margin:6px 0;font-size:14px}.badge{display:inline-block;margin-top:10px;padding:6px 14px;background:var(--gold);color:#172033;border-radius:999px;font-size:12px;font-weight:700}
+form{padding:28px}fieldset{border:1px solid var(--line);border-radius:14px;padding:22px;margin:0 0 22px;background:#fbfdff}legend{padding:6px 14px;border-radius:999px;background:var(--primary);color:#fff;font-size:13px;font-weight:700}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}.full{grid-column:1/-1}.group{margin-bottom:14px}label{display:block;font-size:13px;font-weight:600;margin-bottom:7px}
+input,select,textarea{width:100%;border:1px solid #cbd5e1;border-radius:9px;padding:11px 13px;font:inherit;font-size:13px;background:#fff}input:focus,select:focus,textarea:focus{outline:none;border-color:var(--blue);box-shadow:0 0 0 3px rgba(37,99,235,.1)}
+.score-grid{display:grid;grid-template-columns:1fr 110px;gap:10px;align-items:center;margin:10px 0}.score-grid label{margin:0;font-weight:500}.score{padding:10px}
+.total{padding:14px;background:#eff6ff;border:1px solid #bfdbfe;border-radius:10px;margin-top:12px;font-weight:700}
+.hint{font-size:12px;color:var(--muted);margin:4px 0 12px}
+button{width:100%;border:0;border-radius:10px;padding:15px;background:linear-gradient(135deg,var(--primary),var(--blue));color:#fff;font:600 15px Poppins;cursor:pointer}
+button:disabled{opacity:.6;cursor:not-allowed}
+#status{display:none;padding:25px;text-align:center}.loader{width:42px;height:42px;border:4px solid #e2e8f0;border-top-color:var(--gold);border-radius:50%;animation:spin 1s linear infinite;margin:0 auto 15px}@keyframes spin{to{transform:rotate(360deg)}}
+.success{display:none;background:#ecfdf5;border:2px dashed #10b981;padding:22px;border-radius:12px}.success a{display:block;text-decoration:none;text-align:center;background:#059669;color:#fff;padding:13px;border-radius:9px;font-weight:700;margin-top:12px}
+@media(max-width:650px){.grid{grid-template-columns:1fr}.full{grid-column:auto}.score-grid{grid-template-columns:1fr 90px}form{padding:18px}fieldset{padding:16px}}
+</style>
 </head>
 <body>
-
 <div class="container">
-    <div class="header">
-        <h1>SMKN Kasomalang</h1>
-        <p>Form Penilaian & Administrasi Sertifikat PKL</p>
-        <div class="sub-brand">Kompetensi Keahlian: Rekayasa Perangkat Lunak (RPL)</div>
-    </div>
-    
-    <!-- IFRAME TERSEMBUNYI -->
-    <script type="text/javascript">var submitted=false;</script>
-    <iframe name="hidden_iframe" id="hidden_iframe" style="display:none;" onload="if(submitted) { 
-        document.getElementById('form-container').style.display='none'; 
-        document.getElementById('success-message').style.display='block'; 
-        window.scrollTo(0, 0); 
-        mulaiTimer();
-    }"></iframe>
+<div class="header">
+<h1>SMKN Kasomalang</h1><p>Form Penilaian & Administrasi Sertifikat PKL</p>
+<div class="badge">Rekayasa Perangkat Lunak (RPL)</div>
+</div>
 
-    <!-- HALAMAN PESAN SUKSES & LINK SERTIFIKAT -->
-    <div id="success-message">
-        <h2>✅ Penilaian Berhasil Dikirim!</h2>
-        
-        <div id="timer-box">
-            <div class="loader"></div>
-            <p>Sistem sedang memproses & mencetak sertifikat otomatis ke Google Drive. Mohon tunggu...</p>
-            <span id="waktu-timer">01:00</span>
-        </div>
-        
-        <div id="certificate-box">
-            <p>🎉 Sertifikat sudah siap diunduh!</p>
-            <a href="https://drive.google.com/drive/folders/1gJN7M8H9m_c_kto1355mwau9RmcuoOzq" target="_blank" class="btn-drive">
-                📂 BUKA FOLDER SERTIFIKAT
-            </a>
-            <div class="file-name-info">
-                Cari file dengan nama:<br>
-                <strong id="display-nama-file">Sertifikat PKL - </strong>
-            </div>
-        </div>
+<div id="formWrap">
+<form id="pklForm">
+<fieldset><legend>A. IDENTITAS PESERTA DIDIK</legend>
+<div class="grid">
+<div class="group"><label>Nama Peserta Didik *</label><input id="nama" required></div>
+<div class="group"><label>NIS/NISN *</label><input id="nis" required></div>
+<div class="group"><label>Kelas / Program Keahlian *</label><input id="kelas" placeholder="Contoh: XI RPL A" required></div>
+<div class="group"><label>Penemapatan - Divisi *</label><input id="divisi"  placeholder="Contoh: PT.Maju - Administrasi" ></div>
+<div class="group"><label>Periode PKL *</label><input id="periode" placeholder="Contoh: 20 Juli - 20 November 2026" required></div>
+<div class="group"><label>Nama Pembimbing Industri *</label><input id="pembimbing" required></div>
+</div></fieldset>
 
-        <a href="https://obruubro.github.io/smkgerong/nilai/inputpkl26.html" class="btn-kembali">KEMBALI UNTUK MENGISI NILAI LAIN</a>
-    </div>
+<fieldset><legend>C.1 SIKAP DAN BUDAYA KERJA</legend>
+<p class="hint">Skor: 4 Sangat Baik · 3 Baik · 2 Cukup · 1 Kurang</p>
+<div id="sikap"></div><div class="total">Total Sikap: <span id="totalSikap">0</span> / 28</div></fieldset>
 
-    <!-- FORM UTAMA -->
-    <div id="form-container">
-        <form action="https://docs.google.com/forms/d/e/1FAIpQLSfOXOKxqnrVvOm4bIlNOyhJ-w0NpRutagYPM1K7A8pePClMzw/formResponse" method="POST" target="hidden_iframe" onsubmit="siapkanSistem()">
-            
-            <fieldset>
-                <legend>Identitas Siswa</legend>
-                <div class="form-group">
-                    <label>Nama Lengkap Siswa</label>
-                    <input type="text" id="input-nama" name="entry.102406112" placeholder="Contoh: Ahmad Hidayat" required>
-                </div>
-                <div class="form-group">
-                    <label>NISN</label>
-                    <input type="text" name="entry.793498529" placeholder="Contoh: 0054321098" required>
-                </div>
-            </fieldset>
+<fieldset><legend>C.2 KOMPETENSI TEKNIS DAN PELAKSANAAN PEKERJAAN</legend>
+<p class="hint">Skor: 4 Sangat Baik · 3 Baik · 2 Cukup · 1 Kurang</p>
+<div id="teknis"></div><div class="total">Total Teknis: <span id="totalTeknis">0</span> / 32</div></fieldset>
 
-            <fieldset>
-                <legend>Identitas Perusahaan & Pembimbing</legend>
-                <div class="form-group">
-                    <label>Nama Perusahaan/ Instansi</label>
-                    <input type="text" name="entry.938231451" placeholder="Contoh: PT Digital Indonesia" required>
-                </div>
-                <div class="form-group">
-                    <label>Jabatan Pimpinan/ Kepala</label>
-                    <input type="text" name="entry.128812360" placeholder="Contoh: Kepala Desa / HRD Manager" required>
-                </div>
-                <div class="form-group">
-                    <label>Nama Pimpinan Perusahaan/ Instansi</label>
-                    <input type="text" name="entry.133407204" placeholder="Contoh: Budi Santoso, S.Kom." required>
-                </div>
-                <div class="form-group">
-                    <label>NIP.</label>
-                    <input type="text" name="entry.651650581" placeholder="Isi NIP atau ketik strip (-) jika tidak ada" required>
-                </div>
-                <div class="form-group">
-                    <label>Nama Pembimbing Perusahaan/ Instansi</label>
-                    <input type="text" name="entry.1032916580" placeholder="Contoh: Bapak Anton" required>
-                </div>
-            </fieldset>
+<fieldset><legend>C.3 KOMUNIKASI DAN PROFESIONALISME</legend>
+<p class="hint">Skor: 4 Sangat Baik · 3 Baik · 2 Cukup · 1 Kurang</p>
+<div id="komunikasi"></div><div class="total">Total Komunikasi: <span id="totalKomunikasi">0</span> / 16</div></fieldset>
 
-            <fieldset>
-                <legend>Aspek Non-Teknis (Sikap) (1 - 100)</legend>
-                <div class="form-group">
-                    <label>1. Kedisiplinan & Kehadiran</label>
-                    <input type="number" name="entry.1288805382" min="1" max="100" placeholder="0-100" required>
-                </div>
-                <div class="form-group">
-                    <label>2. Tanggung Jawab</label>
-                    <input type="number" name="entry.642810629" min="1" max="100" placeholder="0-100" required>
-                </div>
-                <div class="form-group">
-                    <label>3. Inisiatif dan Kemandirian</label>
-                    <input type="number" name="entry.599107293" min="1" max="100" placeholder="0-100" required>
-                </div>
-                <div class="form-group">
-                    <label>4. Komunikasi dan Tata Krama</label>
-                    <input type="number" name="entry.15479509" min="1" max="100" placeholder="0-100" required>
-                </div>
-                <div class="form-group">
-                    <label>5. Kerja Sama Tim</label>
-                    <input type="number" name="entry.1737674716" min="1" max="100" placeholder="0-100" required>
-                </div>
-            </fieldset>
+<fieldset><legend>D. REKAPITULASI NILAI</legend>
+<div class="total">Total Skor: <span id="totalSkor">0</span> / 76<br>Nilai Akhir: <span id="nilaiAkhir">0</span></div></fieldset>
 
-            <fieldset>
-                <legend>Aspek Teknis & Catatan Tambahan</legend>
-                <div class="form-group">
-                    <label>Tugas Teknis Yang Dikerjakan (Bisa pilih lebih dari satu)</label>
-                    <div class="checkbox-group">
-                        <label><input type="checkbox" name="entry.1195950814" value="Pengoperasian Perangkat"> Pengoperasian Perangkat</label>
-                        <label><input type="checkbox" name="entry.1195950814" value="Pengelolaan Administrasi, Arsip Digital, dan Input Data ke Sistem"> Pengelolaan Administrasi, Arsip Digital, dan Input Data ke Sistem</label>
-                        <label><input type="checkbox" name="entry.1195950814" value="Dukungan Teknis / IT Support"> Dukungan Teknis / IT Support</label>
-                        <label><input type="checkbox" name="entry.1195950814" value="Pelayanan"> Pelayanan</label>
-                        <label><input type="checkbox" name="entry.1195950814" value="Desain dan Publikasi Digital"> Desain dan Publikasi Digital</label>
-                        
-                        <div style="display: flex; align-items: center; margin-top: 8px;">
-                            <input type="checkbox" name="entry.1195950814" value="__other_option__" id="checkbox-lainnya" style="margin-right: 12px; width: 18px; height: 18px; accent-color: var(--primary-color);">
-                            <span style="margin-right: 10px;">Lainnya:</span>
-                            <input type="text" name="entry.1195950814.other_option_response" placeholder="Sebutkan tugas lainnya..." style="flex: 1; margin: 0; padding: 8px 12px;" oninput="document.getElementById('checkbox-lainnya').checked = this.value.trim() !== '';">
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="form-group">
-                    <label>Nilai Keseluruhan untuk Aspek Teknis (1-100)</label>
-                    <input type="number" name="entry.1497934392" min="1" max="100" placeholder="0-100" required>
-                </div>
-                
-                <div class="form-group">
-                    <label>Catatan / Pesan untuk Siswa</label>
-                    <textarea name="entry.1372554793" rows="4" placeholder="Tulis pesan, kesan, atau saran perbaikan untuk siswa..."></textarea>
-                </div>
-            </fieldset>
+<fieldset><legend>E. PENILAIAN HASIL KERJA / PRODUK PKL</legend>
+<div class="group"><label>Jenis tugas atau proyek yang dikerjakan *</label><textarea id="tugas" rows="3" required></textarea></div>
+<div class="group"><label>Kualitas hasil kerja *</label><select id="kualitas" required><option value="">Pilih</option><option>Sangat Baik</option><option>Baik</option><option>Cukup</option><option>Kurang</option></select></div>
+<div class="group"><label>Deskripsi hasil kerja dan kompetensi yang ditunjukkan *</label><textarea id="deskripsi" rows="4" required></textarea></div>
+</fieldset>
 
-            <button type="submit">Kirim Penilaian &amp; Proses Sertifikat</button>
-        </form>
-    </div>
+<fieldset><legend>F. CATATAN DAN REKOMENDASI</legend>
+<div class="group"><label>Kelebihan peserta didik *</label><textarea id="kelebihan" rows="3" required></textarea></div>
+<div class="group"><label>Hal yang perlu ditingkatkan *</label><textarea id="ditingkatkan" rows="3" required></textarea></div>
+<div class="group"><label>Rekomendasi pembimbing industri *</label><select id="rekomendasi" required><option value="">Pilih</option><option>Sangat Direkomendasikan</option><option>Direkomendasikan</option><option>Perlu Peningkatan Kompetensi</option></select></div>
+</fieldset>
+
+<fieldset><legend>G. PENGESAHAN</legend>
+<div class="grid">
+<div class="group"><label>Tanggal Pengesahan *</label><input type="date" id="tanggal" required></div>
+<div class="group"><label>Jabatan Pembimbing Industri *</label><input id="jabatan" required></div>
+<div class="group full"><label>Nama Pembimbing Industri untuk Pengesahan *</label><input id="namaPengesahan" required></div>
+</div></fieldset>
+
+<button id="submitBtn" type="submit">Kirim Penilaian & Proses Sertifikat</button>
+</form></div>
+
+<div id="status">
+<div class="loader"></div><h2>Penilaian sedang diproses…</h2><p>Data sedang dikirim ke Google Form dan sertifikat sedang dibuat.</p>
+<div class="success" id="success">
+<strong>✅ Penilaian berhasil dikirim dan sertifikat telah dibuat.</strong>
+<a id="certificateLink" target="_blank">📄 Buka / Unduh Sertifikat</a>
+</div>
+</div>
 </div>
 
 <script>
-    function siapkanSistem() {
-        var namaSiswa = document.getElementById("input-nama").value;
-        document.getElementById("display-nama-file").innerText = "Sertifikat PKL - " + namaSiswa;
-        submitted = true;
-    }
+// URL Web App Apps Script. Ganti setelah deployment.
+const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxbxHjG9myZaLM7xmJ8S2qcn2JgotOTojxJ_ZJf1xhYlVHZrTyJ61Mc4COhGe7f0m0/exec";
 
-    function mulaiTimer() {
-        var waktu = 60; 
-        var elemenTimer = document.getElementById("waktu-timer");
-        var kotakTimer = document.getElementById("timer-box");
-        var kotakSertifikat = document.getElementById("certificate-box");
+const items = {
+sikap:[
+"Kedisiplinan dan ketepatan waktu","Tanggung jawab terhadap tugas","Kejujuran dan integritas","Kesopanan dan etika kerja","Inisiatif dan kemandirian","Kemampuan bekerja sama dalam tim","Kepatuhan terhadap tata tertib dan SOP"],
+teknis:[
+"Pemahaman terhadap tugas dan instruksi kerja","Penguasaan keterampilan sesuai bidang keahlian","Ketepatan dan kualitas hasil pekerjaan","Kemampuan menyelesaikan tugas sesuai target","Kemampuan memecahkan masalah","Ketelitian dan kerapian bekerja","Penggunaan alat, perangkat, atau teknologi kerja","Penerapan K3 dan keamanan kerja"],
+komunikasi:[
+"Komunikasi dengan pembimbing dan rekan kerja","Kemampuan menerima kritik dan saran","Kemampuan beradaptasi dengan lingkungan kerja","Kemampuan menyampaikan laporan hasil pekerjaan"]
+};
 
-        var hitungMundur = setInterval(function() {
-            waktu--;
-            
-            var menit = Math.floor(waktu / 60);
-            var detik = waktu % 60;
-            var formatMenit = menit < 10 ? "0" + menit : menit;
-            var formatDetik = detik < 10 ? "0" + detik : detik;
-            
-            elemenTimer.innerText = formatMenit + ":" + formatDetik;
+function renderScores(id, arr, prefix){
+const el=document.getElementById(id);
+arr.forEach((q,i)=>{
+const row=document.createElement("div"); row.className="score-grid";
+const lab=document.createElement("label"); lab.textContent=(i+1)+". "+q;
+const sel=document.createElement("select"); sel.className="score"; sel.id=prefix+(i+1); sel.required=true;
+sel.innerHTML='<option value="">Pilih</option><option value="1">1 - Kurang</option><option value="2">2 - Cukup</option><option value="3">3 - Baik</option><option value="4">4 - Sangat Baik</option>';
+sel.addEventListener("change",updateTotals); row.append(lab,sel); el.appendChild(row);
+});
+}
+renderScores("sikap",items.sikap,"s");
+renderScores("teknis",items.teknis,"t");
+renderScores("komunikasi",items.komunikasi,"k");
 
-            if (waktu <= 0) {
-                clearInterval(hitungMundur); 
-                kotakTimer.style.display = "none"; 
-                kotakSertifikat.style.display = "block"; 
-            }
-        }, 1000); 
-    }
+function sum(prefix,count){let n=0;for(let i=1;i<=count;i++)n+=Number(document.getElementById(prefix+i).value||0);return n}
+function updateTotals(){
+const a=sum("s",7),b=sum("t",8),c=sum("k",4),total=a+b+c;
+document.getElementById("totalSikap").textContent=a;
+document.getElementById("totalTeknis").textContent=b;
+document.getElementById("totalKomunikasi").textContent=c;
+document.getElementById("totalSkor").textContent=total;
+document.getElementById("nilaiAkhir").textContent=total?((total/76)*100).toFixed(2):"0";
+}
+document.getElementById("pklForm").addEventListener("submit",async e=>{
+e.preventDefault();
+if(APPS_SCRIPT_URL.startsWith("GANTI_")){alert("URL Web App Apps Script belum diisi.");return}
+const btn=document.getElementById("submitBtn");btn.disabled=true;btn.textContent="Memproses...";
+document.getElementById("formWrap").style.display="none";document.getElementById("status").style.display="block";
+const payload={
+nama:nama.value,nis:nis.value,kelas:kelas.value,divisi:divisi.value,periode:periode.value,pembimbing:pembimbing.value,
+sikap:[1,2,3,4,5,6,7].map(i=>document.getElementById("s"+i).value),
+teknis:[1,2,3,4,5,6,7,8].map(i=>document.getElementById("t"+i).value),
+komunikasi:[1,2,3,4].map(i=>document.getElementById("k"+i).value),
+tugas:tugas.value,kualitas:kualitas.value,deskripsi:deskripsi.value,kelebihan:kelebihan.value,ditingkatkan:ditingkatkan.value,rekomendasi:rekomendasi.value,
+tanggal:tanggal.value,jabatan:jabatan.value,namaPengesahan:namaPengesahan.value
+};
+try{
+const r=await fetch(APPS_SCRIPT_URL,{method:"POST",body:JSON.stringify(payload)});
+const data=await r.json();
+if(!data.ok)throw new Error(data.error||"Gagal memproses data.");
+document.querySelector("#status>p").textContent="Selesai. Sertifikat dapat dibuka melalui tombol berikut.";
+document.getElementById("success").style.display="block";
+document.getElementById("certificateLink").href=data.certificateUrl;
+}catch(err){
+document.getElementById("status").innerHTML='<h2 style="color:#dc2626">❌ Gagal memproses</h2><p>'+err.message+'</p><button onclick="location.reload()">Kembali ke Form</button>';
+}
+});
 </script>
-
 </body>
 </html>
