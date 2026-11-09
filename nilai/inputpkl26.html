@@ -13,7 +13,8 @@
 .header h1{margin:0;font-size:25px}.header p{margin:6px 0;font-size:14px}.badge{display:inline-block;margin-top:10px;padding:6px 14px;background:var(--gold);color:#172033;border-radius:999px;font-size:12px;font-weight:700}
 form{padding:28px}fieldset{border:1px solid var(--line);border-radius:14px;padding:22px;margin:0 0 22px;background:#fbfdff}legend{padding:6px 14px;border-radius:999px;background:var(--primary);color:#fff;font-size:13px;font-weight:700}
 .grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}.full{grid-column:1/-1}.group{margin-bottom:14px}label{display:block;font-size:13px;font-weight:600;margin-bottom:7px}
-input,select,textarea{width:100%;border:1px solid #cbd5e1;border-radius:9px;padding:11px 13px;font:inherit;font-size:13px;background:#fff}input:focus,select:focus,textarea:focus{outline:none;border-color:var(--blue);box-shadow:0 0 0 3px rgba(37,99,235,.1)}
+input,select,textarea{width:100%;border:1px solid #cbd5e1;border-radius:999px;padding:11px 13px;font:inherit;font-size:13px;background:#fff}
+input,select,textarea{border-radius:9px}input:focus,select:focus,textarea:focus{outline:none;border-color:var(--blue);box-shadow:0 0 0 3px rgba(37,99,235,.1)}
 .score-grid{display:grid;grid-template-columns:1fr 110px;gap:10px;align-items:center;margin:10px 0}.score-grid label{margin:0;font-weight:500}.score{padding:10px}
 .total{padding:14px;background:#eff6ff;border:1px solid #bfdbfe;border-radius:10px;margin-top:12px;font-weight:700}
 .hint{font-size:12px;color:var(--muted);margin:4px 0 12px}
@@ -37,22 +38,23 @@ button:disabled{opacity:.6;cursor:not-allowed}
 <div class="grid">
 <div class="group"><label>Nama Peserta Didik *</label><input id="nama" required></div>
 <div class="group"><label>NIS/NISN *</label><input id="nis" required></div>
-<div class="group"><label>Kelas / Program Keahlian *</label><input id="kelas" placeholder="Contoh: XI RPL A" required></div>
-<div class="group"><label>Penemapatan - Divisi *</label><input id="divisi"  placeholder="Contoh: PT.Maju - Administrasi" ></div>
+<div class="group"><label>Kelas *</label><input id="kelas" placeholder="Contoh: XI RPL A" required></div>
+<div class="group"><label>Penempatan - Divisi *</label><input id="divisi" placeholder="Contoh: PT.Maju - Administrasi" required></div>
 <div class="group"><label>Periode PKL *</label><input id="periode" placeholder="Contoh: 20 Juli - 20 November 2026" required></div>
-<div class="group"><label>Nama Pembimbing Industri *</label><input id="pembimbing" required></div>
+<div class="group"><label>Nama Pembimbing DUDI *</label><input id="pembimbing" required></div>
 </div></fieldset>
-
+<p class="hint">Skor: <br>
+    4 Sangat Baik (Melaksanakan Tugas secara mandiri) · <br>
+    3 Baik (Melaksanakan tugas dengan baik sesuai standar, sesekali memerlukan arahan) · <br> 
+    2 Cukup (Melaksanakan tugas dengan beberapa arahan dan perbaikan) · <br>
+    1 Kurang (Belum memenuhi standar dan memerlukan banyak bimbingan)</p>
 <fieldset><legend>C.1 SIKAP DAN BUDAYA KERJA</legend>
-<p class="hint">Skor: 4 Sangat Baik · 3 Baik · 2 Cukup · 1 Kurang</p>
 <div id="sikap"></div><div class="total">Total Sikap: <span id="totalSikap">0</span> / 28</div></fieldset>
 
 <fieldset><legend>C.2 KOMPETENSI TEKNIS DAN PELAKSANAAN PEKERJAAN</legend>
-<p class="hint">Skor: 4 Sangat Baik · 3 Baik · 2 Cukup · 1 Kurang</p>
 <div id="teknis"></div><div class="total">Total Teknis: <span id="totalTeknis">0</span> / 32</div></fieldset>
 
 <fieldset><legend>C.3 KOMUNIKASI DAN PROFESIONALISME</legend>
-<p class="hint">Skor: 4 Sangat Baik · 3 Baik · 2 Cukup · 1 Kurang</p>
 <div id="komunikasi"></div><div class="total">Total Komunikasi: <span id="totalKomunikasi">0</span> / 16</div></fieldset>
 
 <fieldset><legend>D. REKAPITULASI NILAI</legend>
@@ -61,13 +63,11 @@ button:disabled{opacity:.6;cursor:not-allowed}
 <fieldset><legend>E. PENILAIAN HASIL KERJA / PRODUK PKL</legend>
 <div class="group"><label>Jenis tugas atau proyek yang dikerjakan *</label><textarea id="tugas" rows="3" required></textarea></div>
 <div class="group"><label>Kualitas hasil kerja *</label><select id="kualitas" required><option value="">Pilih</option><option>Sangat Baik</option><option>Baik</option><option>Cukup</option><option>Kurang</option></select></div>
-<div class="group"><label>Deskripsi hasil kerja dan kompetensi yang ditunjukkan *</label><textarea id="deskripsi" rows="4" required></textarea></div>
 </fieldset>
 
 <fieldset><legend>F. CATATAN DAN REKOMENDASI</legend>
 <div class="group"><label>Kelebihan peserta didik *</label><textarea id="kelebihan" rows="3" required></textarea></div>
 <div class="group"><label>Hal yang perlu ditingkatkan *</label><textarea id="ditingkatkan" rows="3" required></textarea></div>
-<div class="group"><label>Rekomendasi pembimbing industri *</label><select id="rekomendasi" required><option value="">Pilih</option><option>Sangat Direkomendasikan</option><option>Direkomendasikan</option><option>Perlu Peningkatan Kompetensi</option></select></div>
 </fieldset>
 
 <fieldset><legend>G. PENGESAHAN</legend>
@@ -81,17 +81,16 @@ button:disabled{opacity:.6;cursor:not-allowed}
 </form></div>
 
 <div id="status">
-<div class="loader"></div><h2>Penilaian sedang diproses…</h2><p>Data sedang dikirim ke Google Form dan sertifikat sedang dibuat.</p>
+<div class="loader"></div><h2>Penilaian sedang diproses…</h2><p>Mohon tunggu sebentar, sertifikat sedang dibuat.</p>
 <div class="success" id="success">
 <strong>✅ Penilaian berhasil dikirim dan sertifikat telah dibuat.</strong>
-<a id="certificateLink" target="_blank">📄 Buka / Unduh Sertifikat</a>
+<a id="certificateLink" target="_blank">📄 Buka / Unduh Sertifikat PDF</a>
 </div>
 </div>
 </div>
 
 <script>
-// URL Web App Apps Script. Ganti setelah deployment.
-const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxbxHjG9myZaLM7xmJ8S2qcn2JgotOTojxJ_ZJf1xhYlVHZrTyJ61Mc4COhGe7f0m0/exec";
+const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzoPTPnqf19EL7QuIH5_IljUue_OZjt8R3-5or3H2BhwuXGeUWPT44m9y_OeSmby_jk/exec";
 
 const items = {
 sikap:[
@@ -125,29 +124,55 @@ document.getElementById("totalKomunikasi").textContent=c;
 document.getElementById("totalSkor").textContent=total;
 document.getElementById("nilaiAkhir").textContent=total?((total/76)*100).toFixed(2):"0";
 }
-document.getElementById("pklForm").addEventListener("submit",async e=>{
-e.preventDefault();
-if(APPS_SCRIPT_URL.startsWith("GANTI_")){alert("URL Web App Apps Script belum diisi.");return}
-const btn=document.getElementById("submitBtn");btn.disabled=true;btn.textContent="Memproses...";
-document.getElementById("formWrap").style.display="none";document.getElementById("status").style.display="block";
-const payload={
-nama:nama.value,nis:nis.value,kelas:kelas.value,divisi:divisi.value,periode:periode.value,pembimbing:pembimbing.value,
-sikap:[1,2,3,4,5,6,7].map(i=>document.getElementById("s"+i).value),
-teknis:[1,2,3,4,5,6,7,8].map(i=>document.getElementById("t"+i).value),
-komunikasi:[1,2,3,4].map(i=>document.getElementById("k"+i).value),
-tugas:tugas.value,kualitas:kualitas.value,deskripsi:deskripsi.value,kelebihan:kelebihan.value,ditingkatkan:ditingkatkan.value,rekomendasi:rekomendasi.value,
-tanggal:tanggal.value,jabatan:jabatan.value,namaPengesahan:namaPengesahan.value
-};
-try{
-const r=await fetch(APPS_SCRIPT_URL,{method:"POST",body:JSON.stringify(payload)});
-const data=await r.json();
-if(!data.ok)throw new Error(data.error||"Gagal memproses data.");
-document.querySelector("#status>p").textContent="Selesai. Sertifikat dapat dibuka melalui tombol berikut.";
-document.getElementById("success").style.display="block";
-document.getElementById("certificateLink").href=data.certificateUrl;
-}catch(err){
-document.getElementById("status").innerHTML='<h2 style="color:#dc2626">❌ Gagal memproses</h2><p>'+err.message+'</p><button onclick="location.reload()">Kembali ke Form</button>';
-}
+
+document.getElementById("pklForm").addEventListener("submit", async e => {
+  e.preventDefault();
+  
+  const btn = document.getElementById("submitBtn");
+  btn.disabled = true;
+  btn.textContent = "Memproses...";
+
+  document.getElementById("formWrap").style.display = "none";
+  document.getElementById("status").style.display = "block";
+
+  const payload = {
+    nama: document.getElementById("nama").value,
+    nis: document.getElementById("nis").value,
+    kelas: document.getElementById("kelas").value,
+    divisi: document.getElementById("divisi").value,
+    periode: document.getElementById("periode").value,
+    pembimbing: document.getElementById("pembimbing").value,
+    sikap: [1,2,3,4,5,6,7].map(i => document.getElementById("s"+i).value),
+    teknis: [1,2,3,4,5,6,7,8].map(i => document.getElementById("t"+i).value),
+    komunikasi: [1,2,3,4].map(i => document.getElementById("k"+i).value),
+    tugas: document.getElementById("tugas").value,
+    kualitas: document.getElementById("kualitas").value,
+    kelebihan: document.getElementById("kelebihan").value,
+    ditingkatkan: document.getElementById("ditingkatkan").value,
+    tanggal: document.getElementById("tanggal").value,
+    jabatan: document.getElementById("jabatan").value,
+    namaPengesahan: document.getElementById("namaPengesahan").value
+  };
+
+  try {
+    const response = await fetch(APPS_SCRIPT_URL, {
+      method: "POST",
+      headers: { "Content-Type": "text/plain;charset=utf-8" },
+      body: JSON.stringify(payload)
+    });
+
+    const data = await response.json();
+
+    if (!data.ok) throw new Error(data.error || "Gagal memproses pembuatan sertifikat.");
+
+    document.querySelector("#status > p").textContent = "Sertifikat berhasil dibuat!";
+    document.getElementById("success").style.display = "block";
+    document.getElementById("certificateLink").href = data.certificateUrl;
+
+  } catch (err) {
+    document.getElementById("status").innerHTML = 
+      '<h2 style="color:#dc2626">❌ Gagal Memproses</h2><p>' + err.message + '</p><button onclick="location.reload()">Kembali ke Form</button>';
+  }
 });
 </script>
 </body>
