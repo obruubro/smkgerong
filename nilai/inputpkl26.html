@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sedang Perbaikan - Penilaian PKL SMKN Kasomalang</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --primary: #1e3a8a;
+    --blue: #2563eb;
+    --gold: #f59e0b;
+    --text: #172033;
+    --muted: #64748b;
+  }
+  * {
+    box-sizing: border-box;
+  }
+  body {
+    margin: 0;
+    min-height: 100vh;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #e0e7ff, #f8fafc);
+    font-family: 'Poppins', sans-serif;
+    color: var(--text);
+  }
+  .card {
+    max-width: 540px;
+    width: 100%;
+    background: #ffffff;
+    border-radius: 18px;
+    overflow: hidden;
+    box-shadow: 0 18px 45px rgba(15, 23, 42, 0.12);
+    text-align: center;
+  }
+  .header {
+    background: linear-gradient(135deg, var(--primary), var(--blue));
+    color: #ffffff;
+    padding: 26px 20px;
+    border-bottom: 5px solid var(--gold);
+  }
+  .header h1 {
+    margin: 0;
+    font-size: 22px;
+  }
+  .badge {
+    display: inline-block;
+    margin-top: 8px;
+    padding: 5px 14px;
+    background: var(--gold);
+    color: #172033;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 700;
+  }
+  .content {
+    padding: 36px 28px;
+  }
+  .icon {
+    font-size: 54px;
+    margin-bottom: 12px;
+    display: inline-block;
+    animation: pulse 2s infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.08); }
+  }
+  .content h2 {
+    margin: 0 0 10px;
+    font-size: 20px;
+    color: var(--primary);
+  }
+  .content p {
+    margin: 0 0 24px;
+    font-size: 14px;
+    line-height: 1.6;
+    color: var(--muted);
+  }
+  .info-box {
+    background: #eff6ff;
+    border: 1px solid #bfdbfe;
+    border-radius: 10px;
+    padding: 12px 16px;
+    font-size: 13px;
+    color: var(--primary);
+    font-weight: 500;
+    margin-bottom: 24px;
+  }
+  .btn {
+    display: inline-block;
+    border: none;
+    border-radius: 10px;
+    padding: 12px 24px;
+    background: linear-gradient(135deg, var(--primary), var(--blue));
+    color: #ffffff;
+    font: 600 14px 'Poppins', sans-serif;
+    cursor: pointer;
+    text-decoration: none;
+    transition: opacity 0.2s;
+  }
+  .btn:hover {
+    opacity: 0.9;
+  }
+</style>
+</head>
+<body>
+
+<div class="card">
+  <div class="header">
+    <h1>SMKN Kasomalang</h1>
+    <div class="badge">Rekayasa Perangkat Lunak (RPL)</div>
+  </div>
+
+  <div class="content">
+    <div class="icon">🛠️</div>
+    <h2>Sistem Sedang Dalam Perbaikan</h2>
+    <p>
+      Mohon maaf atas ketidaknyamanannya. Halaman <strong>Form Penilaian &amp; Administrasi Sertifikat PKL</strong> sedang dalam proses pemeliharaan dan pembaruan sistem.
+    </p>
+    <div class="info-box">
+      Silakan akses kembali halaman ini beberapa saat lagi.
+    </div>
+    <button class="btn" onclick="location.reload()">Muat Ulang Halaman</button>
+  </div>
+</div>
+
+</body>
+</html>
